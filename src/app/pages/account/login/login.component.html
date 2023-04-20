@@ -1,0 +1,44 @@
+<app-breadcrumb [title]="''" [breadcrumb]="'Đăng nhập'"></app-breadcrumb>
+<!-- section start -->
+<section class="login-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Đăng nhập</h3>
+                <div class="theme-card">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="theme-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" formControlName="email"
+                                placeholder="Email" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="review">Mật khẩu</label>
+                            <div class="form-control input-password-holder">
+                                <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password mb-0"
+                                    formControlName="password" placeholder="Mật khẩu" required="">
+                                <span class="icon-holder-eye" (click)="showPassword = !showPassword">
+                                    <i class="{{ showPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pull-right mt-2">
+                            <a class="fw-bold mlem-123" style="color: #ff8084; cursor: pointer;"
+                                href="https://admin-foodify.vercel.app/send-email" target="_blank">Quên mật khẩu</a>
+                        </div>
+                        <button class="btn btn-solid mt-4">Đăng nhập</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 right-login">
+                <h3>Đăng ký</h3>
+                <div class="theme-card authentication-right">
+                    <h6 class="title-font">Tạo tài khoản mới</h6>
+                    <p>Tạo tài khoản mới ngay hôm nay để nhận được nhiều ưu đãi. Trở thành người bán hàng ?</p>
+                    <button [routerLink]="['/home/register']" class="btn btn-solid">Tạo tài khoản</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->

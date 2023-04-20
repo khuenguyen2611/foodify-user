@@ -1,0 +1,108 @@
+<app-header></app-header>
+<app-breadcrumb [title]="'TÀI KHOẢN'" [breadcrumb]="'TÀI KHOẢN'"></app-breadcrumb>
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="account-sidebar" (click)="ToggleDashboard()">
+                    <a hre="javascript:void(0)" class="popup-btn">
+                        my account
+                    </a>
+                </div>
+                <div class="dashboard-left" [class.open]="openDashboard">
+                    <div class="collection-mobile-back" (click)="ToggleDashboard()">
+                        <span class="filter-back">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i> back
+                        </span>
+                    </div>
+                    <div class="block-content">
+                        <ul>
+                            <li class="active"><a>Thông tin tài khoản</a></li>
+                            <li><a [routerLink]="['/home/profile']">Chỉnh sửa tài khoản</a></li>
+                            <li><a [routerLink]="['/home/addresses']">Quản lý địa chỉ</a></li>
+                            <!-- <li><a href="javascript:void(0)">My Wishlist</a></li>
+                            <li><a href="javascript:void(0)">Newsletter</a></li>
+                            <li><a href="javascript:void(0)">My Account</a></li>
+                            <li><a href="javascript:void(0)">Change Password</a></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="dashboard-right">
+                    <div class="dashboard">
+                        <div class="page-title">
+                            <h2>Tài khoản của tôi</h2>
+                        </div>
+                        <div class="welcome-msg">
+                            <p>Xin chào, {{ user.fullName }} !</p>
+                            <p>Đối với nền tảng web, chúng mình chỉ hỗ trợ bạn một số chức năng chính. Nếu bạn muốn khám
+                                phá thêm,
+                                tải ngay ứng dụng của chúng mình trên nền tảng Android tại <a
+                                    href="https://www.facebook.com/" target="_blank">liên kết</a> này.
+                            </p>
+                        </div>
+                        <div class="box-account box-info">
+                            <div class="box-head">
+                                <h2>Thông tin của bạn</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Tài khoản</h3>
+                                            <!-- <a href="javascript:void(0)">Edit</a> -->
+                                        </div>
+                                        <div class="box-content">
+                                            <p>Số điện thoại : {{ user.phoneNumber }}</p>
+                                            <p>Email : {{ user.email }}</p>
+                                            <p *ngIf="!user.isLocked"><a href="javascript:void(0)">Đã xác thực</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Cá nhân</h3>
+                                            <a [routerLink]="['/home/profile']">Chỉnh sửa</a>
+                                        </div>
+                                        <div class="box-content">
+                                            <p>Họ và tên : {{ user.fullName }}</p>
+                                            <p>Ngày sinh : {{ user.dateOfBirth }}</p>
+                                            <p>CCCD/CMND : {{ user.identifiedCode }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="box">
+                                    <div class="box-title">
+                                        <h3>Địa chỉ</h3>
+                                        <a [routerLink]="['/home/addresses']">Quản lý địa chỉ</a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6" *ngFor="let address of user.addresses">
+                                            <h6 *ngIf="user.defaultAddress != address.id">{{ address.address }}</h6>
+                                            <h6 *ngIf="user.defaultAddress == address.id">{{ address.address }} (mặc
+                                                định)</h6>
+                                            <address>
+                                                {{address.ward}}<br>
+                                                {{address.district}}<br>
+                                                <!-- <a href="javascript:void(0)"
+                                                    *ngIf="user.defaultAddress == address.id">Thay đổi</a> -->
+                                            </address>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section end -->

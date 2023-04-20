@@ -1,0 +1,120 @@
+<app-header></app-header>
+<app-breadcrumb [title]="'Đơn hàng của bạn (5 đơn gần nhất)'" [breadcrumb]="'Đơn hàng'"></app-breadcrumb>
+<!-- section start -->
+<section class="wishlist-section section-b-space">
+    <div class="container">
+        <div class="col-md-12 empty-cart-cls text-center" *ngIf='!orders?.length '>
+            <img src="assets/images/empty-order.png" alt="Empty cart" title="Đơn hàng trống">
+            <h3 class="mt-4"><b>Bạn chưa có đơn hàng nào!</b></h3>
+            <h4>Khám phá thêm sản phẩm và thanh toán ngay.</h4>
+        </div>
+        <div class="row" *ngIf="orders?.length">
+            <div class="col-sm-12">
+                <table class="table cart-table table-responsive-xs">
+                    <thead>
+                        <tr class="table-head">
+                            <th scope="col">STT</th>
+                            <th scope="col">Mã đơn hàng</th>
+                            <th scope="col">Ngày đặt đơn</th>
+                            <th scope="col">Phương thức thanh toán</th>
+                            <th scope="col">Giá trị</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <td>
+                                <p><a>{{ i + 1 }}</a></p>
+                            </td>
+                            <td>
+                                <p><strong style="cursor: pointer;" [routerLink]="['/home/order', order?.id]">{{
+                                        order?.orderTrackingNumber
+                                        }}</strong></p>
+                            </td>
+                            <td><a>{{ order?.orderTime }}</a>
+                                <!-- <div class="mobile-cart-content row">
+                                    <div class="col">
+                                        <p>in stock</p>
+                                    </div>
+                                    <div class="col">
+                                        <h2 class="td-color">{{ product.cost | currency:'VND' }}</h2>
+                                    </div>
+                                    <div class="col">
+                                        <h2 class="td-color">
+                                            <a [routerLink]="['/shop/product/left/sidebar/trim-dress']"
+                                                class="icon me-1">
+                                                <i class="ti-close"></i>
+                                            </a>
+                                            <a [routerLink]="['/shop/product/left/sidebar/trim-dress']" class="cart">
+                                                <i class="ti-shopping-cart"></i>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </div> -->
+                            </td>
+                            <td>
+                                <p *ngIf="order?.paymentMethod == 'ZALO PAY'">Zalo pay</p>
+                                <p *ngIf="order?.paymentMethod == 'CASH'">Tiền mặt</p>
+                            </td>
+                            <td>
+                                <p>{{ order.total | currency:'VND' }}</p>
+                            </td>
+                            <td>
+                                <p *ngIf="order?.status =='AWAITING'">Chờ xác nhận</p>
+                                <p *ngIf="order?.status =='CONFIRMED'">Đã xác nhận</p>
+                                <p *ngIf="order?.status =='SHIPPING'">Đang giao hàng</p>
+                                <p *ngIf="order?.status =='COMPLETED'">Thành công</p>
+                                <p *ngIf="order?.status =='CANCELED'">Huỷ đơn</p>
+                                <!-- <a [routerLink]="['/shop/product/left/sidebar/trim-dress']" class="cart">
+                                    <i class="ti-shopping-cart"></i>
+                                </a> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- <div class="row wishlist-buttons">
+            <div class="col-12">
+                <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">continue shopping</a>
+                <a [routerLink]="['/shop/checkout']" class="btn btn-solid">check out</a>
+            </div>
+        </div> -->
+    </div>
+</section>
+<!--section end-->
+
+<!-- <ng-template class="theme-modal" #DeleteModal let-modal>
+  <div class="modal-content quick-view-modal">
+    <div class="modal-body">
+      <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="theme-form">
+        <div class="row">
+          <div class="col-md-12">
+            <label for="name">Bạn chắc chắn muốn xoá sản phẩm khỏi danh sách yêu thích ?</label>
+          </div>
+          <div class=" col-md-12">
+            <hr>
+            <button class="btn btn-sm btn-solid" type="submit" (click)="deleteLoveProduct()">Tiếp
+              tục</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template class="theme-modal" #MessageModal let-modal>
+  <div class="modal-content quick-view-modal">
+    <div class="modal-body">
+      <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="row">
+        {{ message }}
+      </div>
+    </div>
+  </div>
+</ng-template> -->

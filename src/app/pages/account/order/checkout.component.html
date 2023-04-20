@@ -1,0 +1,128 @@
+<app-header></app-header>
+<app-breadcrumb [title]="'Chi tiết đơn hàng'" [breadcrumb]="'Chi tiết'"></app-breadcrumb>
+<!-- section start -->
+<!-- thank-you section start -->
+<section class="section-b-space light-layout">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="success-text">
+          <i class="fa fa-check-circle" aria-hidden="true"></i>
+          <h2>Đặt đơn thành công</h2>
+          <p>Đơn hàng của bạn đã đặt thành công. Vui lòng chờ trong ít phút và shipper sẽ mang đến cho bạn!</p>
+          <p>Mã đơn hàng: {{ order?.orderTrackingNumber }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section ends -->
+<!-- order-detail section start -->
+<section class="section-b-space">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="product-order">
+          <h3>Chi tiết đơn hàng</h3>
+          <div class="row product-order-detail" *ngFor="let detail of order?.orderDetails">
+            <div class="col-3">
+              <img [src]="detail?.product?.images[0]?.imageUrl" alt="" class="img-fluid">
+            </div>
+            <div class="col-3 order_detail">
+              <div>
+                <!-- <h4>Tên sản phẩm</h4> -->
+                <h5>{{ detail?.product?.name }}</h5>
+              </div>
+            </div>
+            <div class="col-3 order_detail">
+              <div>
+                <!-- <h4>Số lượng</h4> -->
+                <h5>x {{ detail?.quantity }}</h5>
+              </div>
+            </div>
+            <div class="col-3 order_detail">
+              <div>
+                <!-- <h4>price</h4> -->
+                <h5>{{ detail?.subtotal | currency:"VND" }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="total-sec">
+            <ul>
+              <li>Tổng tiền sản phẩm <span>{{ order?.productCost | currency:"VND" }}</span></li>
+              <li>Phí giao hàng <span>{{ order?.shippingCost | currency:"VND" }}</span></li>
+            </ul>
+          </div>
+          <div class="final-total">
+            <h3>Tổng thanh toán <span>{{ order?.total | currency:"VND" }}</span></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="col-sm-12 payment-mode">
+          <h4>Trạng thái đơn hàng</h4>
+          <div class="stepper-horizontal" id="stepper1">
+            <div class="step editing">
+              <div class="step-circle"><span>1</span></div>
+              <div class="step-title">Đơn đã được gởi</div>
+              <div class="step-bar-left"></div>
+              <div class="step-bar-right"></div>
+            </div>
+            <div class="step">
+              <div class="step-circle"><span>2</span></div>
+              <div class="step-title">Cửa hàng đã xác nhận đơn</div>
+              <div class="step-bar-left"></div>
+              <div class="step-bar-right"></div>
+            </div>
+            <div class="step">
+              <div class="step-circle"><span>3</span></div>
+              <div class="step-title">Đơn đã được vận chuyển</div>
+              <div class="step-bar-left"></div>
+              <div class="step-bar-right"></div>
+            </div>
+            <div class="step">
+              <div class="step-circle"><span>4</span></div>
+              <div class="step-title">Đã nhận hàng</div>
+              <div class="step-bar-left"></div>
+              <div class="step-bar-right"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row order-success-sec">
+          <div class="col-sm-6">
+            <h4>Thông tin đơn hàng</h4>
+            <ul class="order-detail">
+              <li>Thời gian đặt: {{ order?.orderTime }}</li>
+              <li *ngIf="order?.paymentMethod == 'CASH'">Phương thức thanh toán: Tiền mặt</li>
+              <li *ngIf="order?.paymentMethod == 'ZALO PAY'">Phương thức thanh toán: Zalo Pay</li>
+              <li *ngIf="order?.shipper?.user?.fullName">Tên shipper: {{ order?.shipper?.user?.fullName }}</li>
+              <li *ngIf="order?.shipper?.shop?.name">Cửa hàng: {{ order?.shipper?.shop?.name }}</li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <h4>Địa chỉ giao hàng</h4>
+            <ul class="order-detail">
+              <li>{{ order?.address }}</li>
+            </ul>
+          </div>
+
+
+          <!-- <div class="col-sm-12 payment-mode">
+            <h4>payment method</h4>
+            <p>Pay on Delivery (Cash/Card). Cash on delivery (COD) available. Card/Net banking acceptance subject to
+              device availability.</p>
+          </div>
+          <div class="col-md-12">
+            <div class="delivery-sec">
+              <h3>expected date of delivery</h3>
+              <h2>october 22, 2030</h2>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Section ends -->

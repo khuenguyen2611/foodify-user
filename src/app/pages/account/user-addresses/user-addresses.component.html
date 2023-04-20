@@ -1,0 +1,277 @@
+<app-header></app-header>
+<app-breadcrumb [title]="'TÀI KHOẢN'" [breadcrumb]="'TÀI KHOẢN'"></app-breadcrumb>
+<!-- personal deatail section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="account-sidebar">
+                    <a hre="javascript:void(0)" class="popup-btn">
+                        my account
+                    </a>
+                </div>
+                <div class="dashboard-left">
+                    <div class="collection-mobile-back">
+                        <span class="filter-back">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i> back
+                        </span>
+                    </div>
+                    <div class="block-content">
+                        <ul>
+                            <li><a [routerLink]="['/home/dashboard']">Thông tin tài khoản</a></li>
+                            <li><a [routerLink]="['/home/profile']">Chỉnh sửa tài khoản</a></li>
+                            <li class="active"><a href="javascript:void(0)">Quản lý địa chỉ</a></li>
+                            <!-- <li><a href="javascript:void(0)">My Wishlist</a></li>
+                            <li><a href="javascript:void(0)">Newsletter</a></li>
+                            <li><a href="javascript:void(0)">My Account</a></li>
+                            <li><a href="javascript:void(0)">Change Password</a></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="dashboard-right">
+                    <div class="dashboard">
+                        <div class="page-title">
+                            <h2>Quản lý địa chỉ</h2>
+                        </div>
+                        <div class="contact-page register-page section-b-space">
+                            <div class="container">
+                                <div class="theme-form">
+                                    <div class="row" *ngFor="let address of addresses">
+                                        <div class="col-md-12">
+                                            <hr>
+                                            <label for="name">Địa chỉ</label>
+                                            <input readonly type="text" class="form-control" id="name"
+                                                placeholder="Họ và tên" [value]="address.address" required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email">Quận</label>
+                                            <input readonly type="text" class="form-control" id="last-name"
+                                                [value]="address.district" placeholder="Ngày sinh" required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="review">Phường</label>
+                                            <input readonly type="text" [value]="address.ward" class="form-control"
+                                                id="review" placeholder="Email" required="">
+                                        </div>
+                                        <div class=" col-md-12">
+                                            <!-- <hr> -->
+                                            <button class="btn btn-sm btn-solid" type="submit"
+                                                (click)="openEditModal(address.id)">Chỉnh
+                                                sửa</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button (click)="openDeleteModal(address.id)" class="btn btn-sm btn-solid"
+                                                *ngIf="address.id != defaultAddr" type="submit">Xoá</button>
+                                            <button style="cursor: not-allowed;" class="btn btn-sm btn-solid"
+                                                *ngIf="address.id == defaultAddr" type="submit">Mặc
+                                                định</button>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class=" col-md-12">
+                                            <!-- <hr> -->
+                                            <button class="btn btn-sm btn-solid" type="submit"
+                                                (click)="openCreateModal()">Thêm địa chỉ</button>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-sm btn-solid" type="submit"
+                                                (click)="openChangeModal()">Thay đổi địa chỉ mặc định</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- address section start -->
+<!-- <section class="contact-page register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>SHIPPING ADDRESS</h3>
+                <form class="theme-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name">flat / plot</label>
+                            <input type="text" class="form-control" id="home-ploat" placeholder="company name"
+                                required="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name">Address *</label>
+                            <input type="text" class="form-control" id="address-two" placeholder="Address" required="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email">Zip Code *</label>
+                            <input type="text" class="form-control" id="zip-code" placeholder="zip-code" required="">
+                        </div>
+                        <div class="col-md-6 select_input">
+                            <label for="review">Country *</label>
+                            <select class="form-control" size="1">
+                                <option value="India">India</option>
+                                <option value="UAE">UAE</option>
+                                <option value="U.K">U.K</option>
+                                <option value="US">US</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="review">City *</label>
+                            <input type="text" class="form-control" id="city" placeholder="City" required="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="review">Region/State *</label>
+                            <input type="text" class="form-control" id="region-state" placeholder="Region/state"
+                                required="">
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-sm btn-solid" type="submit">Save setting</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section> -->
+<!-- Section ends -->
+
+<ng-template class="theme-modal" #createAddress let-modal>
+    <div class="modal-content quick-view-modal">
+        <div class="modal-body">
+            <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="theme-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="name">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="Địa chỉ" required="" [(ngModel)]="address">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email">Quận</label>
+                        <select class="form-control" required="" [(ngModel)]="district" (change)="onDistrictSelected()">
+                            <option [selected]="true" [ngValue]="'x'">--- Chọn quận ---</option>
+                            <option *ngFor="let district of districts" [ngValue]="district.name">{{ district.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="review">Phường</label>
+                        <select class="form-control" required="" [(ngModel)]="ward" (change)="onDistrictSelected()">
+                            <option [selected]="true" [ngValue]="'x'">--- Chọn phường ---</option>
+                            <option *ngFor="let ward of wards" [ngValue]="ward.name">{{ ward.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class=" col-md-12">
+                        <hr>
+                        <button class="btn btn-sm btn-solid" type="submit"
+                            (click)="createNewAddress()">Thêm</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template class="theme-modal" #editAddressModal let-modal>
+    <div class="modal-content quick-view-modal">
+        <div class="modal-body">
+            <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="theme-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="name">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="Địa chỉ" required="" [(ngModel)]="address">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email">Quận</label>
+                        <select class="form-control" required="" [(ngModel)]="district" (change)="onDistrictSelected()">
+                            <option [selected]="true" [ngValue]="'x'">--- Chọn quận ---</option>
+                            <option *ngFor="let district of districts" [ngValue]="district.name">{{ district.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="review">Phường</label>
+                        <select class="form-control" required="" [(ngModel)]="ward" (change)="onDistrictSelected()">
+                            <option [selected]="true" [ngValue]="'x'">--- Chọn phường ---</option>
+                            <option *ngFor="let ward of wards" [ngValue]="ward.name">{{ ward.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class=" col-md-12">
+                        <hr>
+                        <button class="btn btn-sm btn-solid" type="submit" (click)="editAddress()">Chỉnh
+                            sửa</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template class="theme-modal" #MessageModal let-modal>
+    <div class="modal-content quick-view-modal">
+        <div class="modal-body">
+            <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="row">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template class="theme-modal" #deleteAddress let-modal>
+    <div class="modal-content quick-view-modal">
+        <div class="modal-body">
+            <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="theme-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="name">Bạn chắc chắn muốn xoá địa chỉ này ?</label>
+                    </div>
+                    <div class=" col-md-12">
+                        <hr>
+                        <button class="btn btn-sm btn-solid" type="submit" (click)="confirmDelete()">Tiếp tục</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template class="theme-modal" #changeDefaultModal let-modal>
+    <div class="modal-content quick-view-modal">
+        <div class="modal-body">
+            <button type="button" class="close float-end border-0" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="theme-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="name">Địa chỉ</label>
+                        <select type="text" class="form-control" required="" [(ngModel)]="addr">
+                            <option *ngFor="let address of addresses" [ngValue]="address.id">{{ address.address }},
+                                {{address.ward}}, {{address.district}}</option>
+                        </select>
+                    </div>
+                    <div class=" col-md-12">
+                        <hr>
+                        <button class="btn btn-sm btn-solid" type="submit" (click)="changeDefaultAddress()">Chỉnh
+                            sửa</button>&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

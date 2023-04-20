@@ -1,0 +1,26 @@
+// @import url('https://fonts.googleapis.com/css2?family=Anuphan&display=swap');
+.box-cover {
+    // font-family: 'Anuphan', sans-serif;
+    margin: 15px 0;
+
+    .text-name {
+        color: #000;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 5px;
+    }
+
+    .text-category {
+        margin: 0 5px;
+        padding: 5px 8px;
+        background-color: #ff8084;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .text-desc {
+        font-size: 16px;
+        font-weight: bold;
+    }
+}

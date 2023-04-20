@@ -1,0 +1,119 @@
+<app-breadcrumb [title]="'Giỏ hàng'" [breadcrumb]="'Giỏ hàng'"></app-breadcrumb>
+<!-- section start -->
+<section class="cart-section section-b-space">
+    <div class="container">
+        <div class="col-sm-12 empty-cart-cls text-center" *ngIf="!products.length">
+            <img src="assets/images/icon-empty-cart.png" class="img-fluid mb-4">
+            <h3><strong>GIỎ HÀNG TRỐNG</strong></h3>
+            <h4>Mua cái gì đó đi, có nhiều thứ cần phải mua mà :)</h4>
+        </div>
+        <div class="row" *ngIf="products.length">
+            <div class="col-sm-12">
+                <table class="table cart-table table-responsive-xs">
+                    <thead>
+                        <tr class="table-head">
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col"></th>
+                            <th scope="col">Tạm tính</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let product of products">
+                        <tr>
+                            <td>
+                                <a [routerLink]="['/shop/products', product.id]">
+                                    <img [src]="product.images[0].imageUrl" [alt]="product.images[0].id">
+                                </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/shop/products', product.id]">{{
+                                    product.name | titlecase }}</a>
+                                <div class="mobile-cart-content row">
+                                    <div class="col">
+                                        <div class="qty-box">
+                                            <div class="input-group">
+                                                <input type="text" name="quantity" class="form-control input-number"
+                                                    disabled [(ngModel)]="product.quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h2 class="td-color">
+                                            {{ product.cost - (product.cost * product.discountPercent / 100) }}
+                                        </h2>
+                                    </div>
+                                    <div class="col">
+                                        <h2 class="td-color">
+                                            <a (click)="removeItem(product)" class="icon">
+                                                <i class="ti-close"></i>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <h2>
+                                    {{ product.cost - (product.cost * product.discountPercent / 100) | currency: 'VND'
+                                    }}
+                                </h2>
+                            </td>
+                            <td>
+                                <div class="qty-box">
+                                    <div class="input-group">
+                                        <div class="input-plus-minus input-minus">
+                                            <button type="button" class="btn quantity-left-minus" data-type="minus"
+                                                (click)="decrement(product)">
+                                                <i class="ti-angle-left"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" name="quantity" class="form-control input-number" disabled
+                                            [(ngModel)]="product.quantity">
+                                        <div class="input-plus-minus input-plus">
+                                            <button type="button" class="btn quantity-right-plus" data-type="plus"
+                                                (click)="increment(product)">
+                                                <i class="ti-angle-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" (click)="removeItem(product)" class="icon">
+                                    <i class="ti-close"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <h2 class="td-color">
+                                    {{ (product.cost - (product.cost * product.discountPercent / 100)) *
+                                    product.quantity
+                                    |currency: 'VND' }}
+                                </h2>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table cart-table table-responsive-md">
+                    <tfoot>
+                        <tr>
+                            <td>Tổng :</td>
+                            <td>
+                                <h2> {{ getTotal | async | currency:'VND'}}</h2>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row cart-buttons" *ngIf='products.length'>
+            <div class="col-6">
+                <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">Tiếp tục mua sắm</a>
+            </div>
+            <div class="col-6">
+                <a [routerLink]="['/shop/checkout']" class="btn btn-solid">Thanh toán</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--section end-->

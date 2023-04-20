@@ -1,0 +1,171 @@
+<app-breadcrumb [title]="''" [breadcrumb]="'Đăng ký'"></app-breadcrumb>
+<!-- section start -->
+<section class="register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Đăng ký tài khoản</h3>
+                <div class="theme-card">
+                    <form [formGroup]="registerForm" class="theme-form">
+                        <div class="row">
+                            <!-- Full Name -->
+                            <div class="col-md-6">
+                                <label for="email">Họ và tên</label>
+                                <div class="mb-3">
+                                    <input formControlName="fullName" type="text" class="form-control"
+                                        placeholder="Họ và tên" required="">
+                                    <div *ngIf="userFullName?.invalid && (userFullName?.dirty || userFullName?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userFullName?.errors?.['required']">Vui lòng không được bỏ trống tên.</div>
+                                        <div *ngIf="userFullName?.errors?.['minlength']">Tên phải có ít nhất 2 kí tự</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- DOB -->
+                            <div class="col-md-3">
+                                <label for="review">Ngày sinh</label>
+                                <div class="mb-3">
+                                    <input formControlName="dob" type="date" class="form-control" placeholder=""
+                                    required="">
+                                    <div *ngIf="userDob?.invalid && (userDob?.dirty || userDob?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userDob?.errors?.['required']">Vui lòng không được bỏ trống ngày sinh.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Identified code -->
+                            <div class="col-md-3">
+                                <label for="review">CCCD/CMND</label>
+                                <div class="mb-3">
+                                    <input formControlName="identifiedCode" type="text" class="form-control"
+                                        placeholder="CCCD/CMND" required="">
+                                    <div *ngIf="userIdentifiedCode?.invalid && (userIdentifiedCode?.dirty || userIdentifiedCode?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userIdentifiedCode?.errors?.['required']">Vui lòng không được bỏ trống CMND/CCCD.</div>
+                                        <div *ngIf="userIdentifiedCode?.errors?.['pattern']">CMND phải có tối đa 9 số hoặc CCCD phải có tối đa 12 số</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Address -->
+                            <div class="col-md-6">
+                                <label for="email">Địa chỉ</label>
+                                <div class="mb-3">
+                                    <input formControlName="address" type="text" class="form-control" id="fname"
+                                        placeholder="Địa chỉ (số đường, số nhà ...)" required="">
+                                    <div *ngIf="userAddress?.invalid && (userAddress?.dirty || userAddress?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userAddress?.errors?.['required']">Vui lòng không được bỏ trống địa chỉ.</div>
+                                        <div *ngIf="userAddress?.errors?.['minlength']">Địa chỉ phải có ít nhất 8 kí tự</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- District -->
+                            <div class="col-md-3">
+                                <label for="review">Quận</label>
+                                <div class="mb-3">
+                                    <select class="form-control" required="" formControlName="district"
+                                        (change)="onDistrictSelected()">
+                                        <option selected=true value="">--- Chọn quận ---</option>
+                                        <option *ngFor="let district of districts" [value]="district.name">{{ district.name
+                                            }}</option>
+                                    </select>
+                                    <div *ngIf="userDistrict?.invalid && (userDistrict?.dirty || userDistrict?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userDistrict?.errors?.['required']">Vui lòng không được bỏ trống quận.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Ward -->
+                            <div class="col-md-3">
+                                <label for="review">Phường</label>
+                                <div class="mb-3">
+                                    <select formControlName="ward" class="form-control" required="">
+                                        <option selected=true value="">--- Chọn phường ---</option>
+                                        <option *ngFor="let ward of wards" [value]="ward.name">{{ ward.name }}</option>
+                                    </select>
+                                    <div *ngIf="userWard?.invalid && (userWard?.dirty || userWard?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userWard?.errors?.['required']">Vui lòng không được bỏ trống quận.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" formControlName="email" placeholder="Email"
+                                        required="">
+                                    <div *ngIf="userEmail?.invalid && (userEmail?.dirty || userEmail?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userEmail?.errors?.['required']">Vui lòng không được bỏ trống email.</div>
+                                        <div *ngIf="userEmail?.errors?.email">Email không hợp lệ, vui lòng nhập lại.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Phone number -->
+                            <div class="col-md-6">
+                                <label for="review">Số điện thoại</label>
+                                <div class="mb-3">
+                                    <input type="tel" class="form-control" formControlName="phoneNumber"
+                                        placeholder="Số điện thoại" required="">
+                                    <div *ngIf="userPhoneNumber?.invalid && (userPhoneNumber?.dirty || userPhoneNumber?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userPhoneNumber?.errors?.['required']">Vui lòng không được bỏ trống số điện thoại.</div>
+                                        <div *ngIf="userPhoneNumber?.errors?.['pattern']">Số điện thoại phải có tối đa 10 số.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Password -->
+                            <div class="col-md-6">
+                                <label for="email">Mật khẩu</label>
+                                <div class="mb-3">
+                                    <div class="form-control input-password-holder">
+                                        <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password" formControlName="password" placeholder="Mật khẩu" required="">
+                                        <span class="icon-holder-eye" (click)="showPassword = !showPassword">
+                                            <i class="{{ showPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></i>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="userPassword?.invalid && (userPassword?.dirty || userPassword?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userPassword?.errors?.['required']">Vui lòng không được bỏ trống mật khẩu</div>
+                                        <div *ngIf="userPassword?.errors?.['pattern']">
+                                          Mật khẩu phải chứa ít nhất 8 ký tự, trong đó gồm một ký tự số, một
+                                          chữ hoa, một chữ thường và một ký
+                                          tự đặc biệt.
+                                          <br />
+                                          Mật khẩu không được chứa khoảng trắng.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Confirmed password -->
+                            <div class="col-md-6">
+                                <label for="review">Xác nhận mật khẩu</label>
+                                <div class="mb-3">
+                                    <div class="form-control input-password-holder">
+                                        <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password" formControlName="confirmPassword" placeholder="Mật khẩu" required="">
+                                        <span class="icon-holder-eye" (click)="showPassword = !showPassword">
+                                            <i class="{{ showPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></i>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="userConfirmPassword?.invalid && (userConfirmPassword?.dirty || userConfirmPassword?.touched)" class="alert alert-danger mt-1">
+                                        <div *ngIf="userConfirmPassword?.errors?.['required']">Vui lòng không được bỏ trống mật khẩu</div>
+                                        <div *ngIf="userConfirmPassword?.errors?.['pattern']">
+                                          Mật khẩu phải chứa ít nhất 8 ký tự, trong đó gồm một ký tự số, một
+                                          chữ hoa, một chữ thường và một ký
+                                          tự đặc biệt.
+                                          <br />
+                                          Mật khẩu không được chứa khoảng trắng.
+                                        </div>
+                                        <div *ngIf="userConfirmPassword?.errors?.['confirmedValidator']">
+                                          Mật khẩu xác nhận phải giống với mật khẩu đã nhập.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-solid" (click)="onSignUp()">Tạo tài khoản</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->

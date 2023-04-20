@@ -1,0 +1,125 @@
+body {
+    font-family: 'Open Sans';
+}
+
+.stepper-horizontal {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+
+    .step {
+        display: table-cell;
+        position: relative;
+        padding: 1.5rem;
+        z-index: 2;
+        width: 25%;
+
+        &:last-child {
+            .step-bar-left {
+                display: none;
+            }
+
+            .step-bar-right {
+                display: none;
+            }
+        }
+
+        .step-circle {
+            width: 2rem;
+            height: 2rem;
+            margin: 0 auto;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            z-index: 2;
+            border: 2px solid #D9E2EC;
+        }
+
+        .step-title {
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            color: #829AB1;
+        }
+
+        .step-optional {
+            text-align: center;
+            color: #829AB1;
+            font-size: 0.75rem;
+            font-style: italic;
+            color: #9FB3C8;
+        }
+
+        .step-bar-left {
+            position: absolute;
+            top: calc(2rem + 5px);
+            height: 5px;
+            background-color: #D9E2EC;
+            border: solid #D9E2EC;
+            border-width: 2px 0;
+            width: calc(100% - 2rem);
+            left: 50%;
+            margin-left: 1rem;
+            z-index: -1;
+        }
+
+        .step-bar-right {
+            position: absolute;
+            top: calc(2rem + 5px);
+            height: 5px;
+            background-color: #D9E2EC;
+            border: solid #D9E2EC;
+            border-width: 2px 0;
+            width: 0;
+            left: 50%;
+            margin-left: 1rem;
+            z-index: -1;
+            transition: width 500ms ease-in-out;
+        }
+    }
+
+    .step.done {
+        .step-circle {
+            background-color: #199473;
+            border: 2px solid #199473;
+            color: #FFFFFF;
+
+            &:before {
+                font-family: 'FontAwesome';
+                font-weight: 100;
+                content: "\f00c";
+            }
+
+            * {
+                display: none;
+            }
+        }
+
+        .step-title {
+            color: #102A43;
+        }
+
+        .step-bar-right {
+            background-color: #199473;
+            border-color: #199473;
+            z-index: 3;
+            width: calc(100% - 1rem);
+        }
+    }
+
+    .step.editing {
+        .step-circle {
+            background: #ffffff;
+            border-color: #199473;
+            color: #199473;
+        }
+
+        .step-title {
+            color: #199473;
+            text-decoration: underline;
+        }
+    }
+}

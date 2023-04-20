@@ -1,0 +1,35 @@
+.input-plus-minus {
+    display: flex;
+    border: 1px solid #ced4da;
+}
+
+.input-minus {
+    border-radius: 8px 0 0 8px;
+    &:hover {
+        background-color: #ff8084;
+
+        i {
+            color: #fff;
+        }
+    }
+}
+
+.input-plus {
+    border-radius: 0 8px 8px 0;
+    &:hover {
+        background-color: #ff8084;
+
+        i {
+            color: #fff;
+        }
+    }
+}
+
+.icon {
+    i {
+        &:hover {
+            color: #ff8084;
+        }
+    }
+    
+}

@@ -1,0 +1,20 @@
+.input-password-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .input-password {
+      border: none;
+      width: 100%;
+      padding: 0;
+      height: 44px;
+    }
+    .icon-holder-eye {
+      color: #999a9b;
+    }
+  }
+
+.mlem-123 {
+    &:hover {
+        text-decoration: underline;
+    }
+}
