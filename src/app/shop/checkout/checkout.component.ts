@@ -289,7 +289,7 @@ export class CheckoutComponent implements OnInit {
         if (this.shippingAddress) {
             this.isAddress = true;
             const userAddress = this.shippingAddress + ', Đà Nẵng';
-            const shopId = this.products[0].id;
+            const shopId = this.products[0].shop.id;
             this.orderService.getShippingCost(userAddress, shopId).subscribe((res) => {
                 this.shippingResponse = res;
             })
