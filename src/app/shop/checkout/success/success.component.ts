@@ -76,21 +76,7 @@ export class SuccessComponent implements OnInit, OnDestroy {
 
                 this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
                     next: (order) => {
-                        const transaction = new Transaction();
-                        transaction.id = order.orderTrackingNumber;
-                        transaction.productCost = order.productCost;
-                        transaction.shippingCost = order.shippingCost;
-                        transaction.total = order.total;
-                        this.userService.getUserById(this.userId).subscribe((user) => {
-                            transaction.userFullName = user.fullName;
-                            this.transactionService.createNewTransaction(transaction).subscribe(() => {
-                                this.toastService.success("Đặt đơn thành công");
-                                this.newId = order.id;
-                                localStorage.removeItem('cartItems');
-                                localStorage.removeItem('checkoutItems');
-                                localStorage.removeItem('shippingInfo');
-                            })
-                        })
+                        this.newId = order.id;
                     }
                 })
             }
