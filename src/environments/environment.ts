@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   stripe_token: 'pk_test_51Kr70iBMfPdj9f7ncBKwqgrPwiLIyDrvlFchwOTcXfomHjnC7i0coMPmwGXnuBhenxVElvLF2ojiP9fda3KYIohP00usHs6HxM',
   paypal_token: 'PAYPAL_TOKEN',
   // foodOrderingBaseApiUrl: 'http://localhost:8080/api',
