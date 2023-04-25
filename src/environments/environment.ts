@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   stripe_token: 'pk_test_51Kr70iBMfPdj9f7ncBKwqgrPwiLIyDrvlFchwOTcXfomHjnC7i0coMPmwGXnuBhenxVElvLF2ojiP9fda3KYIohP00usHs6HxM',
   paypal_token: 'PAYPAL_TOKEN',
-  foodOrderingBaseApiUrl: 'http://localhost:8080/api',
-  // foodOrderingBaseApiUrl: 'https://foodify-backend-production.up.railway.app/api',
+  // foodOrderingBaseApiUrl: 'http://localhost:8080/api',
+  foodOrderingBaseApiUrl: 'https://foodify-backend-production.up.railway.app/api',
   firebaseConfig: {
     apiKey: 'AIzaSyAZFFIuXkbgdp2F-Em4CK2z8kVJ2L4p_UU',
     authDomain: 'foodify-55954.firebaseapp.com',
