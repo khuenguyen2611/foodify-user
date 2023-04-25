@@ -13,12 +13,17 @@ export class FirebaseService {
     userId: number;
     userEmail: string;
     token: string;
+    jwtToken: string = localStorage.getItem('jwt-token')
 
     constructor(
         public firebaseAuth: AngularFireAuth,
         private userService: UserService,
         private toastService: ToastrService,
         private router: Router) {
+        this.userService.getUserByToken(this.jwtToken).subscribe((userInfo) => {
+            this.userId = userInfo.userId;
+            this.userEmail = userInfo.userEmail;
+        })
     }
 
     signUp(email: string, password: string) {
@@ -51,8 +56,6 @@ export class FirebaseService {
                                     this.userEmail = user.email;
 
                                     localStorage.setItem("isLoggedIn", JSON.stringify(this.loggedIn));
-                                    localStorage.setItem("user-id", this.userId.toString());
-                                    localStorage.setItem("user-email", this.userEmail);
 
                                     this.router.navigate(['/home']);
                                     resolve(true); // trả về true nếu đăng nhập thành công
@@ -92,11 +95,11 @@ export class FirebaseService {
     // }
 
     getUserId() {
-        return Number(localStorage.getItem("user-id"))
+        return this.userId;
     }
 
     getEmail() {
-        return localStorage.getItem("user-email");
+        return this.userEmail;
     }
 
     IsLoggedIn() {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { User } from '../classes/user';
+import { User, UserInfo } from '../classes/user';
 import { Address } from '../classes/address';
 import { StringBoolObject } from '../string-bool-object';
 import { Product } from '../classes/product';
@@ -55,6 +55,11 @@ export class UserService {
 
   deleteLoveProductByUser(userId: number, productId: number) {
     return this.httpClient.delete(this.baseUrl + `/${userId}/loves/${productId}`)
+  }
+
+  //Get User By Token
+  getUserByToken(token: string) {
+    return this.httpClient.get<UserInfo>(this.baseUrl + `/info?token=${token}`);
   }
 }
 

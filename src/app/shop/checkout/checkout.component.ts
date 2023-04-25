@@ -17,6 +17,7 @@ import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
 import { ToastrService } from 'ngx-toastr';
 import { OrderDto } from 'src/app/shared/classes/order-dto';
 import { OrderDetail } from 'src/app/shared/classes/order-detail'
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
 
 @Component({
     selector: 'app-checkout',
@@ -24,7 +25,7 @@ import { OrderDetail } from 'src/app/shared/classes/order-detail'
     styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
-    private userId = Number(localStorage.getItem('user-id'))
+    private userId = this.firebaseService.getUserId();
     private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
 
     addresses: Address[] = [];
@@ -42,6 +43,7 @@ export class CheckoutComponent implements OnInit {
     isGenerated = false;
 
     constructor(private fb: UntypedFormBuilder,
+        private firebaseService: FirebaseService,
         public productService: ProductService,
         private orderService: OrderService,
         private userService: UserService,
