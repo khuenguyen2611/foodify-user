@@ -4,12 +4,12 @@
     <div class="collection-collapse-block-content">
         <div class="collection-brand-filter">
             <div class="mt-2">
-                <ng5-slider 
-                    [(value)]="min"
-                    [(highValue)]="max" 
-                    [options]="options"
-                    (userChangeEnd)="appliedFilter($event)"
-                    *ngIf="isBrowser">
+                <ng5-slider
+                        [(value)]="min"
+                        [(highValue)]="max"
+                        [options]="options"
+                        (userChangeEnd)="appliedFilter($event)"
+                        *ngIf="isBrowser">
                 </ng5-slider>
             </div>
         </div>

@@ -1,5 +1,5 @@
-import { Address } from "./address";
-import { Role } from "./role";
+import { Address } from './address';
+import { Role } from './role';
 
 export class User {
     id: number;
@@ -11,9 +11,9 @@ export class User {
     isLocked: boolean;
     identifiedCode: string;
     roleName: string;
-    defaultAddress: number
+    defaultAddress: number;
 
-    //Response
-    addresses: Address[]
+    // Response
+    addresses: Address[];
     role: Role;
 }

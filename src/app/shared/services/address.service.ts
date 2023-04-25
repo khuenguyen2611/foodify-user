@@ -1,19 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { Address } from '../classes/address';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from 'src/environments/environment';
+import {Address} from '../classes/address';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AddressService {
 
-  private baseUrl = `${environment.foodOrderingBaseApiUrl}/addresses`
+    private baseUrl = `${environment.foodOrderingBaseApiUrl}/addresses`;
 
-  constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) {
+    }
 
-  getAddressById(id: number) {
-    return this.httpClient.get<Address>(this.baseUrl + `/${id}`);
-  }
+    getAddressById(id: number) {
+        return this.httpClient.get<Address>(this.baseUrl + `/${id}`);
+    }
 
 }

@@ -47,7 +47,7 @@
 <!-- Parallax banner -->
 <section class="p-0">
     <div class="full-banner parallax-banner15 parallax text-start p-left"
-        [ngStyle]="{'background-image': 'url(assets/images/parallax/main-banner.jpg)'}">
+         [ngStyle]="{'background-image': 'url(assets/images/parallax/main-banner.jpg)'}">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -91,7 +91,7 @@
                         <div class="offer-slider">
                             <div>
                                 <div class="product-box product-wrap"
-                                    *ngFor="let product of bestSellingProducts | slice:0:1">
+                                     *ngFor="let product of bestSellingProducts | slice:0:1">
                                     <app-product-box-two [product]="product" [currency]="productService?.Currency">
                                     </app-product-box-two>
                                 </div>
@@ -116,26 +116,6 @@
     </div>
 </section>
 <!-- product-box slider end -->
-
-<!-- blog section start-->
-<!-- <section class="blog section-b-space pt-0">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="title1 section-t-space">
-                    <h4>Recent Story</h4>
-                    <h2 class="title-inner1">from the blog</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <app-blog [blogs]="blogs"></app-blog>
-            </div>
-        </div>
-    </div>
-</section> -->
-<!-- blog section end -->
 
 <!-- Cart Open To Right Side-->
 <app-cart-variation [direction]="'right'"></app-cart-variation>

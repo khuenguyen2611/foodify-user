@@ -1,4 +1,4 @@
-import { Ward } from "./ward";
+import { Ward } from './ward';
 
 export class District {
     id: number;

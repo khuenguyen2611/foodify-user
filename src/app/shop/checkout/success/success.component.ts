@@ -1,19 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Order } from '../../../shared/classes/order';
-import { OrderService } from '../../../shared/services/order.service';
-import { ProductService } from '../../../shared/services/product.service';
-import { response } from "express";
-import { map } from "rxjs/operators";
-import { FirebaseService } from 'src/app/shared/services/firebase.service';
-import { Product } from 'src/app/shared/classes/product';
-import { OrderDetail } from 'src/app/shared/classes/order-detail';
-import { OrderDto } from 'src/app/shared/classes/order-dto';
-import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/shared/services/user.service';
-import { TransactionService } from 'src/app/shared/services/transaction.service';
-import { Transaction } from 'src/app/shared/classes/transaction';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Order} from '../../../shared/classes/order';
+import {OrderService} from '../../../shared/services/order.service';
+import {ProductService} from '../../../shared/services/product.service';
+import {FirebaseService} from 'src/app/shared/services/firebase.service';
+import {Product} from 'src/app/shared/classes/product';
+import {OrderDetail} from 'src/app/shared/classes/order-detail';
+import {OrderDto} from 'src/app/shared/classes/order-dto';
+import {ShippingResponse} from 'src/app/shared/classes/shipping-response';
+import {ToastrService} from 'ngx-toastr';
+import {Router} from '@angular/router';
+import {UserService} from 'src/app/shared/services/user.service';
+import {TransactionService} from 'src/app/shared/services/transaction.service';
 
 @Component({
     selector: 'app-success',
@@ -35,12 +32,12 @@ export class SuccessComponent implements OnInit, OnDestroy {
     newId: number;
 
     constructor(public productService: ProductService,
-        private orderService: OrderService,
-        private firebaseService: FirebaseService,
-        private toastService: ToastrService,
-        private userService: UserService,
-        private transactionService: TransactionService,
-        private router: Router) {
+                private orderService: OrderService,
+                private firebaseService: FirebaseService,
+                private toastService: ToastrService,
+                private userService: UserService,
+                private transactionService: TransactionService,
+                private router: Router) {
     }
 
     ngOnInit(): void {
@@ -51,7 +48,7 @@ export class SuccessComponent implements OnInit, OnDestroy {
             detail.productId = cartItem.id;
             detail.quantity = cartItem.quantity;
             details.push(detail);
-        })
+        });
 
         this.orderService.checkoutItems.subscribe({
             next: (res) => {
@@ -63,14 +60,13 @@ export class SuccessComponent implements OnInit, OnDestroy {
                     newOrder.lat = '0';
                     newOrder.lng = '0';
                     newOrder.shippingCost = 0;
-                }
-                else {
+                } else {
                     newOrder.address = res.shippingAddress;
                     newOrder.lat = this.shippingInfo.location.lat;
                     newOrder.lng = this.shippingInfo.location.lng;
                     newOrder.shippingCost = this.shippingInfo.cost;
                 }
-                newOrder.paymentMethod = 'ZALO PAY'
+                newOrder.paymentMethod = 'ZALO PAY';
                 newOrder.orderDetails = details;
                 newOrder.orderTrackingNumber = res.orderId;
 
@@ -78,72 +74,16 @@ export class SuccessComponent implements OnInit, OnDestroy {
                     next: (order) => {
                         this.newId = order.id;
                     }
-                })
+                });
             }
         });
-
     }
 
     goToOrder() {
-        this.router.navigate(['/home/order', this.newId]).then(() => { window.location.reload() });
+        this.router.navigate(['/home/order', this.newId]).then(() => {
+            window.location.reload();
+        });
     }
-
-    // ngAfterViewInit() {
-    //     this.nextStep();
-    //     this.orderStatusInterval = setInterval(() => {
-    //         this.orderService.getOrderStatusUpdates(this.orderDetails.orderId).subscribe(
-    //             (next: string) => {
-    //                 if (this.orderStatus !== next) {
-    //                     this.nextStep();
-    //                     this.orderStatus = next;
-    //                 }
-    //             }
-    //         );
-    //     }, 5000);
-    // }
-
-    // nextStep() {
-    //     this.currentStep++;
-    //     if (this.currentStep > this.numSteps) {
-    //         this.currentStep = 1;
-    //     }
-    //     var stepper = document.getElementById("stepper1");
-    //     var steps = stepper.getElementsByClassName("step");
-
-    //     Array.from(steps).forEach((step, index) => {
-    //         let stepNum = index + 1;
-    //         if (stepNum === this.currentStep) {
-    //             this.addClass(step, "editing");
-    //         } else {
-    //             this.removeClass(step, "editing");
-    //         }
-    //         if (stepNum < this.currentStep) {
-    //             this.addClass(step, "done");
-    //         } else {
-    //             this.removeClass(step, "done");
-    //         }
-    //     });
-    // }
-
-    // hasClass(elem, className) {
-    //     return new RegExp(" " + className + " ").test(" " + elem.className + " ");
-    // }
-
-    // addClass(elem, className) {
-    //     if (!this.hasClass(elem, className)) {
-    //         elem.className += " " + className;
-    //     }
-    // }
-
-    // removeClass(elem, className) {
-    //     var newClass = " " + elem.className.replace(/[\t\r\n]/g, " ") + " ";
-    //     if (this.hasClass(elem, className)) {
-    //         while (newClass.indexOf(" " + className + " ") >= 0) {
-    //             newClass = newClass.replace(" " + className + " ", " ");
-    //         }
-    //         elem.className = newClass.replace(/^\s+|\s+$/g, "");
-    //     }
-    // }
 
     ngOnDestroy(): void {
         localStorage.removeItem('cartItems');

@@ -16,8 +16,8 @@ export class PriceComponent implements OnInit {
     @Input() min: number;
     @Input() max: number;
 
-    public collapse: boolean = true;
-    public isBrowser: boolean = false;
+    public collapse = true;
+    public isBrowser = false;
 
     public price: any;
 
@@ -40,5 +40,4 @@ export class PriceComponent implements OnInit {
         this.price = {minPrice: event.value, maxPrice: event.highValue};
         this.priceFilter.emit(this.price);
     }
-
 }

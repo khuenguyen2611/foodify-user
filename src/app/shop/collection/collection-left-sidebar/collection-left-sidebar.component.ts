@@ -11,30 +11,27 @@ import {Product} from '../../../shared/classes/product';
 })
 export class CollectionLeftSidebarComponent implements OnInit {
 
-    public grid: string = 'col-xl-3 col-md-6';
-    public layoutView: string = 'grid-view';
+    public grid = 'col-xl-3 col-md-6';
+    public layoutView = 'grid-view';
     public products: Product[] = [];
     public brands: any[] = [];
     public colors: any[] = [];
     public size: any[] = [];
-    public minPrice: number = 0;
-    public maxPrice: number = 100000;
+    public minPrice = 0;
+    public maxPrice = 100000;
     public tags: any[] = [];
     public category: string;
-    public pageNo: number = 1;
+    public pageNo = 1;
     public paginate: any = {}; // Pagination use only
     public sortBy: string; // Sorting Order
-    public mobileSidebar: boolean = false;
-    public loader: boolean = true;
+    public mobileSidebar = false;
+    public loader = true;
 
     constructor(private route: ActivatedRoute, private router: Router,
                 private viewScroller: ViewportScroller, public productService: ProductService) {
         // Get Query params..
         this.route.queryParams.subscribe(params => {
-            //
-            this.brands = params.shop ? params.shop.split(",") : [];
-            // this.colors = params.color ? params.color.split(",") : [];
-            // this.size = params.size ? params.size.split(",") : [];
+            this.brands = params.shop ? params.shop.split(',') : [];
             this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
             this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
 
@@ -49,13 +46,14 @@ export class CollectionLeftSidebarComponent implements OnInit {
                 this.products = this.productService.sortProducts(response, this.sortBy);
 
                 // Category Filter
-                if (params.category)
+                if (params.category) {
                     this.products = this.products.filter(item => {
                         if (item.categories.map(cat => cat.name).includes(this.category)) {
                             return true;
                         }
                         return false;
                     });
+                }
 
                 if (params.shop) {
                     this.products = this.products.filter(item => this.brands.some(brand => brand === item.shop.name));
@@ -72,10 +70,6 @@ export class CollectionLeftSidebarComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.productService.getProducts.subscribe(
-            data => this.products = data
-        );
-        // console.log(this.products);
     }
 
 
@@ -120,11 +114,11 @@ export class CollectionLeftSidebarComponent implements OnInit {
         this.colors = this.colors.filter(val => val !== tag);
         this.size = this.size.filter(val => val !== tag);
 
-        let params = {
-            brand: this.brands.length ? this.brands.join(",") : null,
-            color: this.colors.length ? this.colors.join(",") : null,
-            size: this.size.length ? this.size.join(",") : null
-        }
+        const params = {
+            brand: this.brands.length ? this.brands.join(',') : null,
+            color: this.colors.length ? this.colors.join(',') : null,
+            size: this.size.length ? this.size.join(',') : null
+        };
 
         this.router.navigate([], {
             relativeTo: this.route,
@@ -145,7 +139,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {
             this.viewScroller.setOffset([120, 120]);
-            this.viewScroller.scrollToAnchor('products'); // Anchore Link
+            this.viewScroller.scrollToAnchor('products'); // Anchor Link
         });
     }
 
@@ -153,7 +147,7 @@ export class CollectionLeftSidebarComponent implements OnInit {
     setPage(page: number) {
         this.router.navigate([], {
             relativeTo: this.route,
-            queryParams: {page: page},
+            queryParams: {page},
             queryParamsHandling: 'merge', // preserve the existing query params in the route
             skipLocationChange: false  // do trigger navigation
         }).finally(() => {
@@ -170,10 +164,11 @@ export class CollectionLeftSidebarComponent implements OnInit {
     // Change Layout View
     updateLayoutView(value: string) {
         this.layoutView = value;
-        if (value == 'list-view')
+        if (value == 'list-view') {
             this.grid = 'col-lg-12';
-        else
+        } else {
             this.grid = 'col-xl-3 col-md-6';
+        }
     }
 
     // Mobile sidebar

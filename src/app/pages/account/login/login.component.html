@@ -13,7 +13,7 @@
                                 placeholder="Email" required="">
                         </div>
                         <div class="form-group">
-                            <label for="review">Mật khẩu</label>
+                            <label id="password">Mật khẩu</label>
                             <div class="form-control input-password-holder">
                                 <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password mb-0"
                                     formControlName="password" placeholder="Mật khẩu" required="">
@@ -35,7 +35,7 @@
                 <h3>Đăng ký</h3>
                 <div class="theme-card authentication-right">
                     <h6 class="title-font">Tạo tài khoản mới</h6>
-                    <p>Tạo tài khoản mới ngay hôm nay để nhận được nhiều ưu đãi. Trở thành người bán hàng ?</p>
+                    <p>Tạo tài khoản mới ngay hôm nay để nhận được nhiều ưu đãi. Trở thành người bán hàng?</p>
                     <button [routerLink]="['/home/register']" class="btn btn-solid">Tạo tài khoản</button>
                 </div>
             </div>

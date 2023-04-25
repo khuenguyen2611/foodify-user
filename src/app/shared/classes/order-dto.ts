@@ -1,6 +1,6 @@
-import { OrderDetail, OrderDetailResponse } from "./order-detail";
-import { Shop } from "./shop";
-import { User } from "./user";
+import { OrderDetail, OrderDetailResponse } from './order-detail';
+import { Shop } from './shop';
+import { User } from './user';
 
 export class OrderDto {
     address: string;
@@ -10,7 +10,7 @@ export class OrderDto {
     orderTrackingNumber: string;
     paymentMethod: string;
     shippingCost: number;
-    status: string = 'AWAITING';
+    status = 'AWAITING';
 }
 
 export class OrderResponse {

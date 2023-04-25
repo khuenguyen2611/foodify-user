@@ -7,14 +7,14 @@
         <div class="front">
             <a (click)="navigateToProduct(product.id)" style="cursor: pointer;">
                 <img [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'"
-                    [lazyLoad]="ImageSrc ? ImageSrc : product.images[0].imageUrl" class="img-border lazy-loading"
-                    alt="{{ product.images[0].id }}" />
+                     [lazyLoad]="ImageSrc ? ImageSrc : product.images[0].imageUrl" class="img-border lazy-loading"
+                     alt="{{ product.images[0].id }}"/>
             </a>
         </div>
         <div class="back" *ngIf="onHowerChangeImage">
             <a [routerLink]="['/shop/products/', product.id]">
                 <img [src]="ImageSrc ? ImageSrc : product.images[1].imageUrl" class="img-fluid lazy-loading"
-                    alt="{{ product.images[0].id }}">
+                     alt="{{ product.images[0].id }}">
             </a>
         </div>
         <ul class="product-thumb-list" *ngIf="thumbnail">
@@ -25,21 +25,15 @@
             </li>
         </ul>
         <div class="cart-info cart-wrap cart-mlem">
-            <a href="javascript:void(0)" title="Add to cart" (click)="CartModal.openModal(product)" *ngIf="cartModal">
-                <i class="ti-shopping-cart"></i>
-            </a>
             <a href="javascript:void(0)" title="Add to cart" (click)="addToCart(product)" *ngIf="!cartModal">
                 <i class="ti-shopping-cart"></i>
             </a>
-            <a href="javascript:void(0)" title="Add to Wishlist" (click)="addToWishlist(product)">
+            <a href="javascript:void(0)" style="cursor: pointer;" title="Add to Wishlist" (click)="addToWishlist(product)">
                 <i class="ti-heart" aria-hidden="true"></i>
             </a>
             <a href="javascript:void(0)" title="Quick View" (click)="QuickView.openModal()">
                 <i class="ti-search" aria-hidden="true"></i>
             </a>
-            <!-- <a href="javascript:void(0)" title="Compare" (click)="addToCompare(product)">
-                <i class="ti-reload" aria-hidden="true"></i>
-            </a> -->
         </div>
     </div>
     <div class="product-detail">
@@ -49,20 +43,13 @@
                     product?.name | titlecase }}</div>
             </a>
             <div class="product-price-mlem">
-                {{ product?.cost - (product?.cost * product?.discountPercent /100) | currency: "VND"}}
+                {{ product?.cost - (product?.cost * product?.discountPercent / 100) | currency: "VND"}}
                 <del *ngIf="product?.discountPercent">
                     <span class="money"> {{ product?.cost |currency:currency?.currency:'symbol' }}</span>
                 </del>
             </div>
             <bar-rating [rate]="product?.averageRating" [readOnly]="true"></bar-rating>
-            <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
-                <li [class]="color" *ngFor="let color of Color(product?.variants)"
-                    [ngStyle]="{'background-color': color}" (click)="ChangeVariants(color, product)">
-                </li>
-            </ul> -->
         </div>
     </div>
 </div>
-<app-skeleton-product-box *ngIf="loader"></app-skeleton-product-box>
 <app-quick-view #quickView [product]="product" [currency]="currency"></app-quick-view>
-<app-cart-modal #cartModal [product]="product" [currency]="currency" *ngIf="cartModal"></app-cart-modal>

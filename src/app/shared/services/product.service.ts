@@ -8,10 +8,10 @@ import {environment} from 'src/environments/environment';
 import {StringBoolObject} from '../string-bool-object';
 
 const state = {
-    products: JSON.parse(localStorage['products'] || '[]'),
-    wishlist: JSON.parse(localStorage['wishlistItems'] || '[]'),
-    compare: JSON.parse(localStorage['compareItems'] || '[]'),
-    cart: JSON.parse(localStorage['cartItems'] || '[]')
+    products: JSON.parse(localStorage.products || '[]'),
+    wishlist: JSON.parse(localStorage.wishlistItems || '[]'),
+    compare: JSON.parse(localStorage.compareItems || '[]'),
+    cart: JSON.parse(localStorage.cartItems || '[]')
 };
 
 @Injectable({
@@ -19,14 +19,14 @@ const state = {
 })
 export class ProductService {
 
-    public Currency = {name: 'VND', currency: 'VND', price: 1} // Default Currency
-    public OpenCart: boolean = false;
+    public Currency = {name: 'VND', currency: 'VND', price: 1}; // Default Currency
+    public OpenCart = false;
     public Products;
     private baseUrl = environment.foodOrderingBaseApiUrl;
 
     private productUrl = `${environment.foodOrderingBaseApiUrl}/products`;
     private userUrl = `${environment.foodOrderingBaseApiUrl}/users`;
-    private sameShop: boolean = false;
+    private sameShop = false;
 
     constructor(private httpClient: HttpClient,
                 private toastrService: ToastrService) {
@@ -42,21 +42,19 @@ export class ProductService {
     // this.baseUrl + '/products'
     // assets/data/products.json
     private get products(): Observable<Product[]> {
-        // this.Products = this.httpClient.get<GetResponseProductNoParam>(this.baseUrl + '/products').pipe(map(data => data));
         this.Products = this.httpClient.get<Product[]>(this.baseUrl + '/v1/products/enable').pipe(map(data => data));
 
-        // this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
         this.Products.subscribe(next => {
-            localStorage['products'] = JSON.stringify(next);
+            localStorage.products = JSON.stringify(next);
         });
         this.Products = this.Products.pipe(
-            startWith(JSON.parse(localStorage['products'] || '[]')));
+            startWith(JSON.parse(localStorage.products || '[]')));
         return this.Products;
     }
 
-    //Get Product Pageable
+    // Get Product Pageable
     getProductPagination(thePage: number, thePageSize: number, sortBy: string, sortDir: string) {
-        return this.httpClient.get<GetResponseProducts>(this.productUrl + `?pageNo=${thePage}&pageSize=${thePageSize}&sortBy=${sortBy}&sortDir=${sortDir}"`)
+        return this.httpClient.get<GetResponseProducts>(this.productUrl + `?pageNo=${thePage}&pageSize=${thePageSize}&sortBy=${sortBy}&sortDir=${sortDir}"`);
     }
 
     // Get Products
@@ -86,30 +84,20 @@ export class ProductService {
             observer.next(state.wishlist);
             observer.complete();
         });
-        return <Observable<Product[]>>itemsStream;
+        return itemsStream as Observable<Product[]>;
     }
 
     // Add to Wishlist
     public addToWishlist(userId: number, product: Product) {
-        // console.log(product.id)
-        // const wishlistItem = state.wishlist.find(item => item.id === product.id)
-        // if (!wishlistItem) {
-        //     state.wishlist.push({
-        //         ...product
-        //     })
-        // }
-        // this.toastrService.success('Product has been added in wishlist.');
-        // localStorage.setItem("wishlistItems", JSON.stringify(state.wishlist));
-        // return true
-        return this.httpClient.post<StringBoolObject>(this.userUrl + `/${userId}/loves/${product.id}`, "").subscribe({
+        return this.httpClient.post<StringBoolObject>(this.userUrl + `/${userId}/loves/${product.id}`, '').subscribe({
             next: () => {
                 this.toastrService.success(`${product.name} đã được thêm vào danh sách yêu thích.`);
             }
-        })
+        });
     }
 
-    //Check Wishlist Product
-    checkLoveProduct(userId: number, productId: number) {
+    // Check Wishlist Product
+    checkFavouriteProduct(userId: number, productId: number) {
         return this.httpClient.get<StringBoolObject>(this.userUrl + `/${userId}/loves/${productId}`);
     }
 
@@ -118,51 +106,15 @@ export class ProductService {
             next: () => {
                 this.toastrService.warning(`${product.name} đã được xoá khỏi danh sách yêu thích.`);
             }
-        })
+        });
     }
 
     // Remove Wishlist items
     public removeWishlistItem(product: Product): any {
         const index = state.wishlist.indexOf(product);
         state.wishlist.splice(index, 1);
-        localStorage.setItem("wishlistItems", JSON.stringify(state.wishlist));
+        localStorage.setItem('wishlistItems', JSON.stringify(state.wishlist));
         return true;
-    }
-
-    /*
-      ---------------------------------------------
-      -------------  Compare Product  -------------
-      ---------------------------------------------
-    */
-
-    // Get Compare Items
-    public get compareItems(): Observable<Product[]> {
-        const itemsStream = new Observable(observer => {
-            observer.next(state.compare);
-            observer.complete();
-        });
-        return <Observable<Product[]>>itemsStream;
-    }
-
-    // Add to Compare
-    public addToCompare(product): any {
-        const compareItem = state.compare.find(item => item.id === product.id)
-        if (!compareItem) {
-            state.compare.push({
-                ...product
-            });
-        }
-        this.toastrService.success('Product has been added in compare.');
-        localStorage.setItem("compareItems", JSON.stringify(state.compare));
-        return true;
-    }
-
-    // Remove Compare items
-    public removeCompareItem(product: Product): any {
-        const index = state.compare.indexOf(product);
-        state.compare.splice(index, 1);
-        localStorage.setItem("compareItems", JSON.stringify(state.compare));
-        return true
     }
 
     /*
@@ -177,7 +129,7 @@ export class ProductService {
             observer.next(state.cart);
             observer.complete();
         });
-        return <Observable<Product[]>>itemsStream;
+        return itemsStream as Observable<Product[]>;
     }
 
     // Add to Cart
@@ -189,7 +141,7 @@ export class ProductService {
                 if (product.shop.name == prod.shop.name) {
                     this.sameShop = true;
                 }
-            })
+            });
 
             if (this.sameShop) {
                 const cartItem = state.cart.find(item => item.id === product.id);
@@ -197,21 +149,21 @@ export class ProductService {
                 const items = cartItem ? cartItem : product;
 
                 if (cartItem) {
-                    cartItem.quantity += qty
+                    cartItem.quantity += qty;
                 } else {
                     state.cart.push({
                         ...product,
                         quantity: qty
-                    })
+                    });
                 }
 
                 this.OpenCart = true; // If we use cart variation modal
-                localStorage.setItem("cartItems", JSON.stringify(state.cart));
+                localStorage.setItem('cartItems', JSON.stringify(state.cart));
                 this.toastrService.success(`Thêm ${product.name} vào giỏ hàng thành công`);
             }
 
             if (!this.sameShop) {
-                this.toastrService.error("Chỉ thêm được sản phẩm cùng shop vào giỏ hàng!")
+                this.toastrService.error('Chỉ thêm được sản phẩm cùng shop vào giỏ hàng!');
             }
         } else {
             const cartItem = state.cart.find(item => item.id === product.id);
@@ -221,16 +173,16 @@ export class ProductService {
             // if (!stock) return false
 
             if (cartItem) {
-                cartItem.quantity += qty
+                cartItem.quantity += qty;
             } else {
                 state.cart.push({
                     ...product,
                     quantity: qty
-                })
+                });
             }
 
             this.OpenCart = true; // If we use cart variation modal
-            localStorage.setItem("cartItems", JSON.stringify(state.cart));
+            localStorage.setItem('cartItems', JSON.stringify(state.cart));
             this.toastrService.success(`Thêm ${product.name} vào giỏ hàng thành công`);
         }
     }
@@ -239,21 +191,21 @@ export class ProductService {
     public updateCartQuantity(product: Product, quantity: number): Product | boolean {
         return state.cart.find((items, index) => {
             if (items.id === product.id) {
-                const qty = state.cart[index].quantity + quantity
-                const stock = this.calculateStockCounts(state.cart[index], quantity)
+                const qty = state.cart[index].quantity + quantity;
+                const stock = this.calculateStockCounts(state.cart[index], quantity);
                 if (qty !== 0 && stock) {
-                    state.cart[index].quantity = qty
+                    state.cart[index].quantity = qty;
                 }
-                localStorage.setItem("cartItems", JSON.stringify(state.cart));
+                localStorage.setItem('cartItems', JSON.stringify(state.cart));
                 return true;
             }
-        })
+        });
     }
 
     // Calculate Stock Counts
     public calculateStockCounts(product, quantity) {
-        const qty = product.quantity + quantity
-        const stock = product.stock
+        const qty = product.quantity + quantity;
+        const stock = product.stock;
         if (stock < qty || stock == 0) {
             this.toastrService.error('You can not add more items than available. In stock ' + stock + ' items.');
             return false;
@@ -265,7 +217,7 @@ export class ProductService {
     public removeCartItem(product: Product): any {
         const index = state.cart.indexOf(product);
         state.cart.splice(index, 1);
-        localStorage.setItem("cartItems", JSON.stringify(state.cart));
+        localStorage.setItem('cartItems', JSON.stringify(state.cart));
         return true;
     }
 
@@ -275,7 +227,7 @@ export class ProductService {
             return product.reduce((prev, curr: Product) => {
                 let cost = curr.cost;
                 if (curr.discountPercent) {
-                    cost = curr.cost - (curr.cost * curr.discountPercent / 100)
+                    cost = curr.cost - (curr.cost * curr.discountPercent / 100);
                 }
                 return (prev + cost * curr.quantity) * this.Currency.price;
             }, 0);
@@ -318,7 +270,7 @@ export class ProductService {
                     return 1;
                 }
                 return 0;
-            })
+            });
         } else if (payload === 'a-z') {
             return products.sort((a, b) => {
                 if (a.name < b.name) {
@@ -327,7 +279,7 @@ export class ProductService {
                     return 1;
                 }
                 return 0;
-            })
+            });
         } else if (payload === 'z-a') {
             return products.sort((a, b) => {
                 if (a.name > b.name) {
@@ -336,7 +288,7 @@ export class ProductService {
                     return 1;
                 }
                 return 0;
-            })
+            });
         } else if (payload === 'low') {
             return products.sort((a, b) => {
                 if (a.cost < b.cost) {
@@ -345,7 +297,7 @@ export class ProductService {
                     return 1;
                 }
                 return 0;
-            })
+            });
         } else if (payload === 'high') {
             return products.sort((a, b) => {
                 if (a.cost > b.cost) {
@@ -365,10 +317,10 @@ export class ProductService {
     */
     public getPager(totalItems: number, currentPage: number = 1, pageSize: number = 16) {
         // calculate total pages
-        let totalPages = Math.ceil(totalItems / pageSize);
+        const totalPages = Math.ceil(totalItems / pageSize);
 
         // Paginate Range
-        let paginateRange = 3;
+        const paginateRange = 3;
 
         // ensure current page isn't out of range
         if (currentPage < 1) {
@@ -390,23 +342,23 @@ export class ProductService {
         }
 
         // calculate start and end item indexes
-        let startIndex = (currentPage - 1) * pageSize;
-        let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
         // create an array of pages to ng-repeat in the pager control
-        let pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
+        const pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
 
         // return object with all pager properties required by the view
         return {
-            totalItems: totalItems,
-            currentPage: currentPage,
-            pageSize: pageSize,
-            totalPages: totalPages,
-            startPage: startPage,
-            endPage: endPage,
-            startIndex: startIndex,
-            endIndex: endIndex,
-            pages: pages
+            totalItems,
+            currentPage,
+            pageSize,
+            totalPages,
+            startPage,
+            endPage,
+            startIndex,
+            endIndex,
+            pages
         };
     }
 

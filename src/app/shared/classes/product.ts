@@ -1,6 +1,6 @@
-import {Category} from "./category";
-import {ProductImage} from "./product-image";
-import {Shop} from "./shop";
+import {Category} from './category';
+import {ProductImage} from './product-image';
+import {Shop} from './shop';
 
 // Products
 export interface Product {
@@ -36,7 +36,7 @@ export interface Product {
     tags?: any[];
     // images?: Images[];
 
-    //Back-end
+    // Back-end
     name?: string;
     isEnabled: boolean;
     description?: string;
