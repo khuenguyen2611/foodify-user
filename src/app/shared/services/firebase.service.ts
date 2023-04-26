@@ -1,8 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Router} from '@angular/router';
 import {UserService} from './user.service';
 import {ToastrService} from 'ngx-toastr';
+import firebase from 'firebase/compat/app';
+
 
 @Injectable({
     providedIn: 'root'
@@ -13,12 +15,15 @@ export class FirebaseService {
     userId: number;
     userEmail: string;
     token: string;
+    reCaptchaVerifier: any;
+
 
     constructor(
         public firebaseAuth: AngularFireAuth,
         private userService: UserService,
         private toastService: ToastrService,
-        private router: Router) {
+        private router: Router,
+        private ngZone: NgZone) {
     }
 
     signUp(email: string, password: string) {
@@ -78,6 +83,28 @@ export class FirebaseService {
                 }).catch((error) => {
                 resolve(false);
             });
+        });
+    }
+
+    getPhoneOtp(phoneNumber: string) {
+        this.reCaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {size: 'invisible'});
+
+        firebase.auth().signInWithPhoneNumber(phoneNumber, this.reCaptchaVerifier).then(
+            (confirmationResult) => {
+                console.log(confirmationResult);
+                localStorage.setItem('verificationId', JSON.stringify(confirmationResult.verificationId));
+
+                this.ngZone.run(() => {
+                    this.router.navigate(['/home/login']);
+                    localStorage.setItem('isLoggedIn', String(true));
+                });
+            }
+        ).catch((error) => {
+            console.log(error.message);
+            alert(error.message);
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);
         });
     }
 

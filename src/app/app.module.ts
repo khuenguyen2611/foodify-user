@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import {HttpInterceptorService} from './service/http-interceptor.service';
 import {environment} from '../environments/environment';
 import {AngularFireStorageModule} from '@angular/fire/compat/storage';
 import {AngularFireModule} from '@angular/fire/compat';
-
+import {NgOtpInputModule} from 'ng-otp-input';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppRoutingModule,
         AngularFireStorageModule,
         AngularFireModule.initializeApp(environment.firebaseConfig, 'cloud'),
+        NgOtpInputModule
     ],
     providers: [
         {
@@ -62,7 +63,8 @@ export function HttpLoaderFactory(http: HttpClient) {
             multi: true
         }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {
 }

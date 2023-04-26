@@ -31,8 +31,9 @@ import {TapToTopComponent} from './components/tap-to-top/tap-to-top.component';
 
 // Pipes
 import {DiscountPipe} from './pipes/discount.pipe';
-import {ProductBoxTwoComponent} from './components/product/product-box-two/product-box-two.component';
 import {SettingsComponent} from './components/settings/settings.component';
+import {ProductBoxTwoComponent} from "./components/product/product-box-two/product-box-two.component";
+import {CartModalComponent} from "./components/modal/cart-modal/cart-modal.component";
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import {SettingsComponent} from './components/settings/settings.component';
         QuickViewComponent,
         CartVariationComponent,
         TapToTopComponent,
-        DiscountPipe
+        DiscountPipe,
+        CartModalComponent
     ],
     imports: [
         CommonModule,
@@ -83,7 +85,8 @@ import {SettingsComponent} from './components/settings/settings.component';
         QuickViewComponent,
         CartVariationComponent,
         TapToTopComponent,
-        DiscountPipe
+        DiscountPipe,
+        CartModalComponent
     ]
 })
 export class SharedModule {

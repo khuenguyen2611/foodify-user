@@ -16,6 +16,7 @@ import {CheckoutComponent} from './account/order/checkout.component';
 import {AboutUsComponent} from './about-us/about-us.component';
 import {UserAddressesComponent} from './account/user-addresses/user-addresses.component';
 import {OrderListComponent} from './account/order-list/order-list.component';
+import {NgOtpInputModule} from "ng-otp-input";
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import {OrderListComponent} from './account/order-list/order-list.component';
         GalleryModule,
         LightboxModule,
         SharedModule,
-        PagesRoutingModule
+        PagesRoutingModule,
+        NgOtpInputModule
     ]
 })
 export class PagesModule {

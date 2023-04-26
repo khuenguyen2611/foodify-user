@@ -10,13 +10,13 @@
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="text" class="form-control" id="email" formControlName="email"
-                                placeholder="Email" required="">
+                                   placeholder="Email" required="">
                         </div>
                         <div class="form-group">
                             <label id="password">Mật khẩu</label>
                             <div class="form-control input-password-holder">
                                 <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password mb-0"
-                                    formControlName="password" placeholder="Mật khẩu" required="">
+                                       formControlName="password" placeholder="Mật khẩu" required="">
                                 <span class="icon-holder-eye" (click)="showPassword = !showPassword">
                                     <i class="{{ showPassword ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></i>
                                 </span>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="pull-right mt-2">
                             <a class="fw-bold mlem-123" style="color: #ff8084; cursor: pointer;"
-                                href="https://admin-foodify.vercel.app/auth/send-email" target="_blank">Quên mật
+                               href="https://admin-foodify.vercel.app/auth/send-email" target="_blank">Quên mật
                                 khẩu</a>
                         </div>
                         <button class="btn btn-solid mt-4">Đăng nhập</button>
@@ -43,3 +43,12 @@
     </div>
 </section>
 <!--Section ends-->
+<!--<div>-->
+<!--    <h3>Signin Using Phone Number</h3>-->
+<!--    <button (click)="getPhoneOTP()">Get Phone OTP</button>-->
+<!--</div>-->
+<!--<div id="sign-in-button"></div>-->
+<!--<div class="otp">-->
+<!--    <ng-otp-input #ngOtpInput (onInputChange)="onOtpChange($event)" [config]="captchaConfig"></ng-otp-input>-->
+<!--    <button class="btn btn-success mt-4" (click)="handleClick()">Verify OTP</button>-->
+<!--</div>-->

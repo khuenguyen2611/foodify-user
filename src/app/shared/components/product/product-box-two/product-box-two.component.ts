@@ -1,7 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {QuickViewComponent} from '../../modal/quick-view/quick-view.component';
-import {Product} from '../../../classes/product';
-import {ProductService} from '../../../services/product.service';
+import {QuickViewComponent} from "../../modal/quick-view/quick-view.component";
+import {CartModalComponent} from "../../modal/cart-modal/cart-modal.component";
+import {Product} from "../../../classes/product";
+import {ProductService} from "../../../services/product.service";
 import {FirebaseService} from 'src/app/shared/services/firebase.service';
 import {ToastrService} from 'ngx-toastr';
 
@@ -15,11 +16,12 @@ export class ProductBoxTwoComponent implements OnInit {
 
     @Input() product: Product;
     @Input() currency: any = this.productService.Currency; // Default Currency
-    @Input() cartModal = false; // Default False
+    @Input() cartModal: boolean = false; // Default False
 
     @ViewChild('quickView') QuickView: QuickViewComponent;
+    @ViewChild('cartModal') CartModal: CartModalComponent;
 
-    public ImageSrc: string;
+    public ImageSrc: string
 
     constructor(
         private productService: ProductService,
@@ -43,7 +45,6 @@ export class ProductBoxTwoComponent implements OnInit {
                     this.productService.addToWishlist(this.userId, product);
                 }
             }
-        });
+        })
     }
-
 }

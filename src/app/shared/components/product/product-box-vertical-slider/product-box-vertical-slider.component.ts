@@ -11,15 +11,15 @@ import { Router } from '@angular/router';
 })
 export class ProductBoxVerticalSliderComponent implements OnInit {
 
-    @Input() title = 'Sản phẩm mới'; // Default
-    @Input() category = '';
-    @Input() type = 'fashion'; // Default Fashion
+    @Input() title: string = 'Sản phẩm mới'; // Default
+    @Input() category: string = '';
+    @Input() type: string = 'fashion'; // Default Fashion
 
-    // Pagination Properties
+    //Pagination Properties
     thePageNumber = 1;
     thePageSize = 10;
     sortBy = 'createdTime';
-    sortDir = 'desc';
+    sortDir = 'desc'
     theTotalElements = 0;
 
     public products: Product[] = [];
@@ -27,7 +27,7 @@ export class ProductBoxVerticalSliderComponent implements OnInit {
     public NewProductSliderConfig: any = NewProductSlider;
 
     constructor(public productService: ProductService,
-                private router: Router) {
+        private router: Router) {
         // this.productService.getProducts.subscribe(response =>
         //     this.products = response.filter(item => item.type === this.type)
         // );
@@ -36,13 +36,13 @@ export class ProductBoxVerticalSliderComponent implements OnInit {
 
     ngOnInit(): void {
         this.productService.getProductPagination(this.thePageNumber - 1, this.thePageSize, this.sortBy, this.sortDir)
-            .subscribe(this.processResult());
+            .subscribe(this.processResult())
     }
 
     goToProduct(id: number) {
         this.router.navigate(['/shop/products', id]).then(() => {
             window.location.reload();
-        });
+        })
     }
 
     processResult() {
@@ -51,6 +51,6 @@ export class ProductBoxVerticalSliderComponent implements OnInit {
             this.thePageNumber = data.page.pageNo + 1;
             this.thePageSize = data.page.pageSize;
             this.theTotalElements = data.page.totalElements;
-        };
+        }
     }
 }

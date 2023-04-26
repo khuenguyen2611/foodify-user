@@ -9,6 +9,7 @@ import {Address} from 'src/app/shared/classes/address';
 import {AuthService} from 'src/app/shared/services/auth.service';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 @Component({
     selector: 'app-register',
@@ -27,6 +28,7 @@ export class RegisterComponent implements OnInit {
     isHaveDistrict = false;
 
     showPassword = false;
+
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -78,7 +80,6 @@ export class RegisterComponent implements OnInit {
     }
 
     onSignUp() {
-
         if (this.registerForm.invalid) {
             this.registerForm.markAllAsTouched();
             return;
@@ -150,7 +151,6 @@ export class RegisterComponent implements OnInit {
             }
         });
     }
-
 
     get userFullName() {
         return this.registerForm.get('fullName');
