@@ -10,7 +10,7 @@
                         <div class="row">
                             <!-- Full Name -->
                             <div class="col-md-6">
-                                <label for="email">Họ và tên</label>
+                                <label id="fullname">Họ và tên</label>
                                 <div class="mb-3">
                                     <input formControlName="fullName" type="text" class="form-control"
                                         placeholder="Họ và tên" required="">
@@ -38,7 +38,7 @@
                             </div>
                             <!-- Identified code -->
                             <div class="col-md-3">
-                                <label for="review">CCCD/CMND</label>
+                                <label id="id">CCCD/CMND</label>
                                 <div class="mb-3">
                                     <input formControlName="identifiedCode" type="text" class="form-control"
                                         placeholder="CCCD/CMND" required="">
@@ -55,7 +55,7 @@
                         <div class="row">
                             <!-- Address -->
                             <div class="col-md-6">
-                                <label for="email">Địa chỉ</label>
+                                <label id="address">Địa chỉ</label>
                                 <div class="mb-3">
                                     <input formControlName="address" type="text" class="form-control" id="fname"
                                         placeholder="Địa chỉ (số đường, số nhà ...)" required="">
@@ -70,7 +70,7 @@
                             </div>
                             <!-- District -->
                             <div class="col-md-3">
-                                <label for="review">Quận</label>
+                                <label id="district">Quận</label>
                                 <div class="mb-3">
                                     <select class="form-control" required="" formControlName="district"
                                         (change)="onDistrictSelected()">
@@ -88,7 +88,7 @@
                             </div>
                             <!-- Ward -->
                             <div class="col-md-3">
-                                <label for="review">Phường</label>
+                                <label id="ward">Phường</label>
                                 <div class="mb-3">
                                     <select formControlName="ward" class="form-control" required="">
                                         <option selected=true value="">--- Chọn phường ---</option>
@@ -187,7 +187,7 @@
                             </div>
                             <!-- Confirmed password -->
                             <div class="col-md-6">
-                                <label for="review">Xác nhận mật khẩu</label>
+                                <label id="confirmPassword">Xác nhận mật khẩu</label>
                                 <div class="mb-3">
                                     <div class="form-control input-password-holder">
                                         <input type="{{ showPassword ? 'text' : 'password' }}" class="input-password"

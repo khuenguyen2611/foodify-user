@@ -9,6 +9,7 @@ import { Address } from 'src/app/shared/classes/address';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
@@ -23,14 +24,15 @@ export class RegisterComponent implements OnInit {
 
     public registerForm: UntypedFormGroup;
 
-    //Address
-    ward: string = '';
-    district: string = '';
+    // Address
+    ward = '';
+    district = '';
     districts: District[] = [];
     wards: Ward[] = [];
-    isHaveDistrict: boolean = false;
+    isHaveDistrict = false;
 
-    showPassword: boolean = false;
+    showPassword = false;
+
 
     //Phonenumber
     reCaptchaVerifier;
@@ -87,7 +89,6 @@ export class RegisterComponent implements OnInit {
     }
 
     onSignUp() {
-
         if (this.registerForm.invalid) {
             this.registerForm.markAllAsTouched();
             return;
@@ -98,7 +99,9 @@ export class RegisterComponent implements OnInit {
         // newAddress.id = 1;
         newAddress.address = this.userAddress.value;
         newAddress.district = this.userDistrict.value;
-        if (this.userDistrict.value != 'Huyện Hoàng Sa') newAddress.ward = this.userWard.value;
+        if (this.userDistrict.value != 'Huyện Hoàng Sa') {
+            newAddress.ward = this.userWard.value;
+        }
 
         register.fullName = this.userFullName.value;
         register.dateOfBirth = this.userDob.value;
@@ -110,12 +113,10 @@ export class RegisterComponent implements OnInit {
         this.authService.checkEmailOrPhoneNumberExist(register).subscribe({
             next: (result) => {
                 if (result.title == 'emailExist') {
-                    this.toastService.error("Email bạn sử dụng đã được đăng ký. Vui lòng chọn một email khác!")
-                }
-                else if (result.title == 'phoneNumExist') {
-                    this.toastService.error("Số điện thoại bạn sử dụng đã được đăng ký. Vui lòng chọn một số điện thoại khác!")
-                }
-                else {
+                    this.toastService.error('Email bạn sử dụng đã được đăng ký. Vui lòng chọn một email khác!');
+                } else if (result.title == 'phoneNumExist') {
+                    this.toastService.error('Số điện thoại bạn sử dụng đã được đăng ký. Vui lòng chọn một số điện thoại khác!');
+                } else {
                     this.authService.checkIdentifiedCodeExist(register.identifiedCode).subscribe({
                         next: (res) => {
                             if (res.isTrue == true) {
@@ -137,14 +138,12 @@ export class RegisterComponent implements OnInit {
                                     })
                             }
                         }
-                    })
+                    });
                 }
             },
-            error: () => { }
-        })
-
-
-        // this.firebaseAuthService.signUp(this.userEmail.value, this.userPassword.value);
+            error: () => {
+            }
+        });
     }
 
     getOTP() {
@@ -195,8 +194,8 @@ export class RegisterComponent implements OnInit {
                     this.districts = districts;
                     resolve();
                 }
-            })
-        })
+            });
+        });
     }
 
     onDistrictSelected() {
@@ -208,9 +207,8 @@ export class RegisterComponent implements OnInit {
                 this.isHaveDistrict = true;
                 this.wards = district.wards;
             }
-        })
+        });
     }
-
 
     get userFullName() { return this.registerForm.get('fullName') }
     get userDob() { return this.registerForm.get('dob') }

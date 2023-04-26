@@ -144,7 +144,7 @@ export let TestimonialSlider: any = {
             items: 1
         }
     }
-}
+};
 
 // Team Slider
 export let TeamSlider: any = {
@@ -166,7 +166,7 @@ export let TeamSlider: any = {
             items: 2
         }
     }
-}
+};
 
 // Compare Slider
 export let CompareSlider: any = {
@@ -187,7 +187,7 @@ export let CompareSlider: any = {
             items: 1
         }
     }
-}
+};
 
 // Product Slider
 export let ProductSlider: any = {
@@ -209,7 +209,7 @@ export let ProductSlider: any = {
             items: 1
         }
     }
-}
+};
 
 // Product Slider
 export let ProductOneSlider: any = {
@@ -217,7 +217,7 @@ export let ProductOneSlider: any = {
     loop: true,
     dots: false,
     navSpeed: 300
-}
+};
 
 // New Product Slider
 export let NewProductSlider: any = {
@@ -228,7 +228,7 @@ export let NewProductSlider: any = {
     navContainerClass: 'owl-nav',
     navClass: ['owl-prev', 'owl-next'],
     navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
-}
+};
 
 // Product Details Main Slider
 export let ProductDetailsMainSlider: any = {
@@ -238,7 +238,7 @@ export let ProductDetailsMainSlider: any = {
     autoplay: false,
     slideSpeed: 300,
     loop: true
-}
+};
 
 // Product Details Thumb Slider
 export let ProductDetailsThumbSlider: any = {
@@ -246,4 +246,4 @@ export let ProductDetailsThumbSlider: any = {
     loop: true,
     margin: 10,
     dots: false
-}
+};

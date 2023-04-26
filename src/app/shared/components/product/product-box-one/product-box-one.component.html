@@ -17,13 +17,6 @@
                     alt="{{ product.images[0].id }}">
             </a>
         </div>
-        <ul class="product-thumb-list" *ngIf="thumbnail">
-            <li class="grid_thumb_img" [class.active]="ImageSrc == image.imageUrl" *ngFor="let image of product.images">
-                <a href="javascript:void(0)" (mouseover)="ChangeVariantsImage(image.imageUrl)">
-                    <img [lazyLoad]="image.imageUrl">
-                </a>
-            </li>
-        </ul>
         <div class="cart-info cart-wrap cart-mlem">
             <a href="javascript:void(0)" title="Add to cart" (click)="CartModal.openModal(product)" *ngIf="cartModal">
                 <i class="ti-shopping-cart"></i>
@@ -63,6 +56,5 @@
         </div>
     </div>
 </div>
-<app-skeleton-product-box *ngIf="loader"></app-skeleton-product-box>
 <app-quick-view #quickView [product]="product" [currency]="currency"></app-quick-view>
 <app-cart-modal #cartModal [product]="product" [currency]="currency" *ngIf="cartModal"></app-cart-modal>

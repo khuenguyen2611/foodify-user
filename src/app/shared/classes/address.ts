@@ -1,6 +1,6 @@
 export class Address {
     id: number;
-    address: string
+    address: string;
     district: string;
-    ward: string
+    ward: string;
 }

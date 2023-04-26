@@ -3,14 +3,13 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from "@angular/router";
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
-import { userInfo } from 'os';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FirebaseService {
     loggedIn = false;
-    isUserOrAdmin: boolean = false;
+    isUserOrAdmin = false;
     userId: number;
     userEmail: string;
     token: string;
@@ -46,6 +45,7 @@ export class FirebaseService {
                         response.user.getIdToken().then((token: string) => {
                             this.token = token;
                             localStorage.setItem('jwt-token', token);
+                            localStorage.setItem('isLoggedIn', String(true));
                             this.userService.getUserByEmail(email).subscribe((user) => {
                                 if ((user.role.roleName == 'ROLE_ADMIN' || user.role.roleName == 'ROLE_USER') && !user.isLocked) {
                                     this.loggedIn = true;
@@ -64,16 +64,15 @@ export class FirebaseService {
                                             this.token = null;
                                             localStorage.clear();
                                             if (user.isLocked) {
-                                                this.toastService.error("Tài khoản của bạn đã bị khoá. Vui lòng liên hệ quản trị viên để biết thêm chi tiết !")
-                                            }
-                                            else {
-                                                this.toastService.error("Tài khoản của bạn không có quyền đăng nhập vào trang web dành cho người dùng !")
+                                                this.toastService.error('Tài khoản của bạn đã bị khoá. Vui lòng liên hệ quản trị viên để biết thêm chi tiết !');
+                                            } else {
+                                                this.toastService.error('Tài khoản của bạn không có quyền đăng nhập vào trang web dành cho người dùng !');
                                             }
                                             resolve(false); // trả về false nếu tài khoản không có quyền truy cập
                                         }
                                     );
                                 }
-                            })
+                            });
                         });
                     }
                 }).catch((error) => {
@@ -82,58 +81,26 @@ export class FirebaseService {
         });
     }
 
-    // async signUp(email: string, password: string) {
-    //     await this.firebaseAuth.createUserWithEmailAndPassword(email, password)
-    //         .then(
-    //             res => {
-    //                 this.isLoggedIn = true;
-    //                 localStorage.setItem('user', JSON.stringify(res.user));
-    //             }
-    //         );
-    // }
-
-    getUserId() {
-        return this.userId;
-    }
-
-    getEmail() {
-        return this.userEmail;
-    }
-
     IsLoggedIn() {
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (isLoggedIn != null) {
             return JSON.parse(isLoggedIn);
         }
     }
 
-    IsUserOrAdmin() {
-        return this.isUserOrAdmin;
-    }
-
-    isAuthenticated() {
-        return this.token != null;
-    }
-
     isTokenExpired() {
-        const now = new Date().getTime() / 1000
+        const now = new Date().getTime() / 1000;
         const payload = JSON.parse(atob(localStorage.getItem('jwt-token').split('.')[1]));
-        return payload.exp < now
+        return payload.exp < now;
     }
 
     logout() {
         this.firebaseAuth.signOut().then(
-            res => {
-
-            }
+            () => console.log('successfully!')
         );
         this.token = null;
         localStorage.clear();
-        window.location.href = '/home/login'
+        window.location.href = '/home/login';
     }
-
-
-
-
 }
 

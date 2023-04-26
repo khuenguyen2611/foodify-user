@@ -13,7 +13,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
   public orders: OrderResponse[];
   private token: string = localStorage.getItem('jwt-token');
 
-  refreshInterval: number = 5000;
+  refreshInterval = 5000;
   refreshTimeout;
 
   constructor(

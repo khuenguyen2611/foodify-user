@@ -8,7 +8,7 @@ export class ProductDto {
         this._price = price;
         this._quantity = quantity;
     }
-    
+
     get name(): string {
         return this._name;
     }

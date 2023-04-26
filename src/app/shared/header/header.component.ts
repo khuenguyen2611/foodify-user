@@ -1,7 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { UserService } from '../services/user.service';
-import { User } from '../classes/user';
 
 @Component({
     selector: 'app-header',
@@ -10,10 +9,10 @@ import { User } from '../classes/user';
 })
 export class HeaderComponent implements OnInit {
 
-    @Input() class: string = 'header-2';
-    @Input() themeLogo: string = 'assets/images/icon/logo.png'; // Default Logo
-    @Input() topbar: boolean = true; // Default True
-    @Input() sticky: boolean = false; // Default false
+    @Input() class = 'header-2';
+    @Input() themeLogo = 'assets/images/icon/logo.png'; // Default Logo
+    @Input() topbar = true; // Default True
+    @Input() sticky = false; // Default false
 
     private token: string = localStorage.getItem('jwt-token')
     public isLoggedIn = this.firebaseService.IsLoggedIn();
@@ -22,7 +21,7 @@ export class HeaderComponent implements OnInit {
     public userFullName: string;
 
 
-    public stick: boolean = false;
+    public stick = false;
 
     constructor(
         private firebaseService: FirebaseService,
@@ -45,9 +44,9 @@ export class HeaderComponent implements OnInit {
     }
 
     // @HostListener Decorator
-    @HostListener("window:scroll", [])
+    @HostListener('window:scroll', [])
     onWindowScroll() {
-        let number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
         if (number >= 150 && window.innerWidth > 400) {
             this.stick = true;
         } else {
@@ -58,5 +57,4 @@ export class HeaderComponent implements OnInit {
     logOut() {
         this.firebaseService.logout();
     }
-
 }

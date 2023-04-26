@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 // import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { environment } from '../../../environments/environment';
 import { Product } from "../../shared/classes/product";
@@ -10,7 +10,6 @@ import { OrderInfo } from "../../shared/classes/OrderInfo";
 import { PaymentInfo } from "../../shared/classes/payment-info";
 import { ProductDto } from "../../shared/classes/product-dto";
 import { Router } from "@angular/router";
-import { randomUUID } from "crypto";
 import { Address } from 'src/app/shared/classes/address';
 import { UserService } from 'src/app/shared/services/user.service';
 import { ShippingResponse } from 'src/app/shared/classes/shipping-response';
@@ -30,18 +29,20 @@ export class CheckoutComponent implements OnInit {
     private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
 
     addresses: Address[] = [];
-    isAddress: boolean = false;
-    userName: string = '';
+    isAddress = false;
+    userName = '';
     shippingResponse: ShippingResponse;
-    isShipping: boolean = false;
+    isShipping = false;
     total: number;
 
     public checkoutForm: UntypedFormGroup;
     public products: Product[] = [];
-    public payment: string = 'CASH';
+    public payment = 'CASH';
     public amount: any;
     public paymentUrl: string;
     isGenerated = false;
+
+    isLoggedIn = false;
 
     constructor(private fb: UntypedFormBuilder,
         private firebaseService: FirebaseService,
@@ -52,15 +53,7 @@ export class CheckoutComponent implements OnInit {
         private router: Router
     ) {
         this.checkoutForm = this.fb.group({
-            // firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
-            // lastname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
-            // phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-            // email: ['', [Validators.required, Validators.email]],
-            // address: ['', [Validators.required, Validators.maxLength(50)]],
             address: ['', Validators.required],
-            // town: ['', Validators.required],
-            // state: ['', Validators.required],
-            // postalcode: ['', Validators.required]
         });
     }
 
@@ -87,34 +80,17 @@ export class CheckoutComponent implements OnInit {
     public get getTotal(): Observable<number> {
         if (this.isAddress && this.shippingResponse?.cost > 0) {
             return this.productService.cartTotalAmount().pipe(map(num => num + this.shippingResponse?.cost));
-        }
-        else {
+        } else {
             return this.productService.cartTotalAmount();
         }
     }
-
-    // Stripe Payment Gateway
-    // stripeCheckout() {
-    //     var handler = (<any>window).StripeCheckout.configure({
-    //         key: environment.stripe_token, // publishble key
-    //         locale: 'auto',
-    //         token: (token: any) => {
-    //             this.orderService.createOrder(this.products, this.checkoutForm.value, token.id, this.amount);
-    //         }
-    //     });
-    //     handler.open({
-    //         name: 'Shopify',
-    //         description: 'Online Shopping Food Store',
-    //         amount: this.amount * 100
-    //     });
-    // }
 
     cashCheckout(): void {
         const details: OrderDetail[] = [];
         const orderTrackingNumber = crypto.randomUUID();
         if (this.isShipping == false) {
             const newOrder = new OrderDto();
-            newOrder.address = 'Đến shop lấy'
+            newOrder.address = 'Đến shop lấy';
             newOrder.lat = '0';
             newOrder.lng = '0';
             newOrder.orderTrackingNumber = orderTrackingNumber;
@@ -126,7 +102,7 @@ export class CheckoutComponent implements OnInit {
                 detail.productId = cartItem.id;
                 detail.quantity = cartItem.quantity;
                 details.push(detail);
-            })
+            });
 
             newOrder.orderDetails = details;
             this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
@@ -136,9 +112,8 @@ export class CheckoutComponent implements OnInit {
                     this.router.navigate(['/home/order', order.id]).then(() => { window.location.reload() });
 
                 }
-            })
-        }
-        else if (this.isShipping == true && this.isAddress == true) {
+            });
+        } else if (this.isShipping == true && this.isAddress == true) {
             const newOrder = new OrderDto();
 
             this.cartProducts.forEach((cartItem) => {
@@ -146,9 +121,9 @@ export class CheckoutComponent implements OnInit {
                 detail.productId = cartItem.id;
                 detail.quantity = cartItem.quantity;
                 details.push(detail);
-            })
+            });
 
-            newOrder.address = this.shippingAddress + ", Đà Nẵng"
+            newOrder.address = this.shippingAddress + ', Đà Nẵng';
             newOrder.lat = this.shippingResponse.location.lat;
             newOrder.lng = this.shippingResponse.location.lng;
             newOrder.shippingCost = this.shippingResponse.cost;
@@ -162,10 +137,9 @@ export class CheckoutComponent implements OnInit {
                     this.toastService.success("Đặt đơn thành công");
                     this.router.navigate(['/home/order', order.id]).then(() => { window.location.reload() });
                 }
-            })
-        }
-        else {
-            this.toastService.warning("Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn");
+            });
+        } else {
+            this.toastService.warning('Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn');
         }
     }
 
@@ -181,7 +155,7 @@ export class CheckoutComponent implements OnInit {
             this.getTotal.subscribe(result => {
                 const orderInfo: OrderInfo = new OrderInfo('Đến shop lấy', result.toString(), orderTrackingNumber);
                 const paymentInfo: PaymentInfo = new PaymentInfo(productsDto, orderInfo);
-                this.orderService.createZaloPayOrder(paymentInfo, "Đến shop lấy").subscribe({
+                this.orderService.createZaloPayOrder(paymentInfo, 'Đến shop lấy').subscribe({
                     next: data => {
                         this.paymentUrl = data.paymentOrderUrl;
                     },
@@ -192,10 +166,8 @@ export class CheckoutComponent implements OnInit {
                 setTimeout(() => {
                     window.open(this.paymentUrl, '_blank');
                 }, 2000);
-
-            })
-        }
-        else if (this.isShipping == true && this.isAddress == true) {
+            });
+        } else if (this.isShipping == true && this.isAddress == true) {
             localStorage.setItem('shippingInfo', JSON.stringify(this.shippingResponse));
             this.getTotal.subscribe(result => {
                 const orderInfo: OrderInfo = new OrderInfo(this.shippingAddress, result.toString(), orderTrackingNumber);
@@ -210,86 +182,10 @@ export class CheckoutComponent implements OnInit {
                 setTimeout(() => {
                     window.open(this.paymentUrl, '_blank');
                 }, 2000);
-            })
+            });
+        } else {
+            this.toastService.warning('Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn');
         }
-        else {
-            this.toastService.warning("Vui lòng chọn địa chỉ giao hàng trước khi đặt đơn");
-        }
-
-
-        // const orderInterval = setInterval(() => {
-        //     this.orderService.createZaloPayOrder(paymentInfo).subscribe({
-        //             next: data => {
-        //                 this.paymentUrl = data.paymentOrderUrl;
-        //                 // console.log(data.paymentOrderUrl);
-        //                 console.log(this.paymentUrl);
-        //                 if (this.paymentUrl !== undefined) {
-        //                     clearInterval(orderInterval);
-        //                 }
-        //                 console.log(this.paymentUrl);
-        //             },
-        //             error: err => console.log(err)
-        //         }
-        //     );
-        // }, 2000);
-
-
-    }
-
-    // Paypal Payment Gateway
-    private initConfig(): void {
-        // this.payPalConfig = {
-        //     currency: this.productService.Currency.currency,
-        //     clientId: environment.paypal_token,
-        //     createOrderOnClient: (data) => < ICreateOrderRequest > {
-        //       intent: 'CAPTURE',
-        //       purchase_units: [{
-        //           amount: {
-        //             currency_code: this.productService.Currency.currency,
-        //             value: this.amount,
-        //             breakdown: {
-        //                 item_total: {
-        //                     currency_code: this.productService.Currency.currency,
-        //                     value: this.amount
-        //                 }
-        //             }
-        //           }
-        //       }]
-        //   },
-        //     advanced: {
-        //         commit: 'true'
-        //     },
-        //     style: {
-        //         label: 'paypal',
-        //         size:  'small', // small | medium | large | responsive
-        //         shape: 'rect', // pill | rect
-        //     },
-        //     onApprove: (data, actions) => {
-        //         this.orderService.createOrder(this.products, this.checkoutForm.value, data.orderID, this.getTotal);
-        //         console.log('onApprove - transaction was approved, but not authorized', data, actions);
-        //         actions.order.get().then(details => {
-        //             console.log('onApprove - you can get full order details inside onApprove: ', details);
-        //         });
-        //     },
-        //     onClientAuthorization: (data) => {
-        //         console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
-        //     },
-        //     onCancel: (data, actions) => {
-        //         console.log('OnCancel', data, actions);
-        //     },
-        //     onError: err => {
-        //         console.log('OnError', err);
-        //     },
-        //     onClick: (data, actions) => {
-        //         console.log('onClick', data, actions);
-        //     }
-        // };
-    }
-
-
-    // APP INFO
-    checkPaymentStatus() {
-
     }
 
     onAddressSelected() {
@@ -300,9 +196,8 @@ export class CheckoutComponent implements OnInit {
             const shopId = this.products[0].shop.id;
             this.orderService.getShippingCost(userAddress, shopId).subscribe((res) => {
                 this.shippingResponse = res;
-            })
-        }
-        else {
+            });
+        } else {
             this.shippingResponse = undefined;
         }
     }
@@ -313,5 +208,7 @@ export class CheckoutComponent implements OnInit {
         this.shippingResponse = undefined;
     }
 
-    get shippingAddress() { return this.checkoutForm.get('address').value + ', Đà Nẵng' }
+    get shippingAddress() {
+        return this.checkoutForm.get('address').value + ', Đà Nẵng';
+    }
 }

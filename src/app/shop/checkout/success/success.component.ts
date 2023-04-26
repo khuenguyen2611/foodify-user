@@ -1,9 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Order } from '../../../shared/classes/order';
 import { OrderService } from '../../../shared/services/order.service';
 import { ProductService } from '../../../shared/services/product.service';
-import { response } from "express";
-import { map } from "rxjs/operators";
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { Product } from 'src/app/shared/classes/product';
 import { OrderDetail } from 'src/app/shared/classes/order-detail';
@@ -13,7 +11,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/shared/services/user.service';
 import { TransactionService } from 'src/app/shared/services/transaction.service';
-import { Transaction } from 'src/app/shared/classes/transaction';
 
 @Component({
     selector: 'app-success',
@@ -87,65 +84,10 @@ export class SuccessComponent implements OnInit, OnDestroy {
     }
 
     goToOrder() {
-        this.router.navigate(['/home/order', this.newId]).then(() => { window.location.reload() });
+        this.router.navigate(['/home/order', this.newId]).then(() => {
+            window.location.reload();
+        });
     }
-
-    // ngAfterViewInit() {
-    //     this.nextStep();
-    //     this.orderStatusInterval = setInterval(() => {
-    //         this.orderService.getOrderStatusUpdates(this.orderDetails.orderId).subscribe(
-    //             (next: string) => {
-    //                 if (this.orderStatus !== next) {
-    //                     this.nextStep();
-    //                     this.orderStatus = next;
-    //                 }
-    //             }
-    //         );
-    //     }, 5000);
-    // }
-
-    // nextStep() {
-    //     this.currentStep++;
-    //     if (this.currentStep > this.numSteps) {
-    //         this.currentStep = 1;
-    //     }
-    //     var stepper = document.getElementById("stepper1");
-    //     var steps = stepper.getElementsByClassName("step");
-
-    //     Array.from(steps).forEach((step, index) => {
-    //         let stepNum = index + 1;
-    //         if (stepNum === this.currentStep) {
-    //             this.addClass(step, "editing");
-    //         } else {
-    //             this.removeClass(step, "editing");
-    //         }
-    //         if (stepNum < this.currentStep) {
-    //             this.addClass(step, "done");
-    //         } else {
-    //             this.removeClass(step, "done");
-    //         }
-    //     });
-    // }
-
-    // hasClass(elem, className) {
-    //     return new RegExp(" " + className + " ").test(" " + elem.className + " ");
-    // }
-
-    // addClass(elem, className) {
-    //     if (!this.hasClass(elem, className)) {
-    //         elem.className += " " + className;
-    //     }
-    // }
-
-    // removeClass(elem, className) {
-    //     var newClass = " " + elem.className.replace(/[\t\r\n]/g, " ") + " ";
-    //     if (this.hasClass(elem, className)) {
-    //         while (newClass.indexOf(" " + className + " ") >= 0) {
-    //             newClass = newClass.replace(" " + className + " ", " ");
-    //         }
-    //         elem.className = newClass.replace(/^\s+|\s+$/g, "");
-    //     }
-    // }
 
     ngOnDestroy(): void {
         localStorage.removeItem('cartItems');

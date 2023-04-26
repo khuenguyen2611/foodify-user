@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { HomeSlider } from '../../../shared/data/slider';
+import {Component, Input, OnInit} from '@angular/core';
+import {HomeSlider} from '../../../shared/data/slider';
 
 @Component({
     selector: 'app-slider',
@@ -8,6 +8,9 @@ import { HomeSlider } from '../../../shared/data/slider';
 })
 export class SliderComponent implements OnInit {
 
+    constructor() {
+    }
+
     @Input() sliders: any[];
     @Input() class: string;
     @Input() textClass: string;
@@ -15,12 +18,8 @@ export class SliderComponent implements OnInit {
     @Input() buttonText: string;
     @Input() buttonClass: string;
 
-    constructor() {
-    }
+    public HomeSliderConfig: any = HomeSlider;
 
     ngOnInit(): void {
     }
-
-    public HomeSliderConfig: any = HomeSlider;
-
 }

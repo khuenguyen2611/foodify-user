@@ -10,17 +10,16 @@ import { SliderService } from 'src/app/shared/services/slider.service';
     styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-
     public products: Product[] = [];
     public trendingProducts: Product[] = [];
     public bestSellingProducts: Product[] = [];
     public ProductSliderConfig: any = ProductSlider;
 
-    //Pagination Properties
+    // Pagination Properties
     thePageNumber = 1;
     thePageSize = 10;
     sortBy = 'id';
-    sortDir = 'asc'
+    sortDir = 'asc';
     theTotalElements = 0;
 
     constructor(public productService: ProductService,
@@ -38,29 +37,6 @@ export class ShopComponent implements OnInit {
     // Sliders
     public sliders = [];
 
-    // Blogs
-    public blogs = [{
-        image: 'assets/images/blog/6.jpg',
-        date: '25 January 2018',
-        title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
-        by: 'John Dio'
-    }, {
-        image: 'assets/images/blog/7.jpg',
-        date: '26 January 2018',
-        title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
-        by: 'John Dio'
-    }, {
-        image: 'assets/images/blog/8.jpg',
-        date: '27 January 2018',
-        title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
-        by: 'John Dio'
-    }, {
-        image: 'assets/images/blog/9.jpg',
-        date: '28 January 2018',
-        title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
-        by: 'John Dio'
-    }]
-
     ngOnInit(): void {
         this.getTrendingProducts();
         this.getBestSellingProducts();
@@ -68,12 +44,12 @@ export class ShopComponent implements OnInit {
 
     getTrendingProducts() {
         this.productService.getProductPagination(this.thePageNumber - 1, this.thePageSize, 'averageRating', 'desc')
-            .subscribe(this.processTrendingResult())
+            .subscribe(this.processTrendingResult());
     }
 
     getBestSellingProducts() {
         this.productService.getProductPagination(this.thePageNumber - 1, this.thePageSize, 'sold', 'desc')
-            .subscribe(this.processBestSellingResult())
+            .subscribe(this.processBestSellingResult());
     }
 
     processTrendingResult() {
@@ -82,7 +58,7 @@ export class ShopComponent implements OnInit {
             this.thePageNumber = data.page.pageNo + 1;
             this.thePageSize = data.page.pageSize;
             this.theTotalElements = data.page.totalElements;
-        }
+        };
     }
 
     processBestSellingResult() {
@@ -91,7 +67,7 @@ export class ShopComponent implements OnInit {
             this.thePageNumber = data.page.pageNo + 1;
             this.thePageSize = data.page.pageSize;
             this.theTotalElements = data.page.totalElements;
-        }
+        };
     }
 
 }

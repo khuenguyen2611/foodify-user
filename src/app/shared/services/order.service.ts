@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { PaymentInfo } from '../classes/payment-info';
-import { map } from 'rxjs/operators';
-import { ShippingResponse } from '../classes/shipping-response';
-import { OrderDto, OrderResponse, OrderResponsePageable } from '../classes/order-dto';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {PaymentInfo} from '../classes/payment-info';
+import {ShippingResponse} from '../classes/shipping-response';
+import {OrderDto, OrderResponse, OrderResponsePageable} from '../classes/order-dto';
 
 
 const state = {
-    checkoutItems: JSON.parse(localStorage['checkoutItems'] || '[]')
+    checkoutItems: JSON.parse(localStorage.checkoutItems || '[]')
 };
 
 @Injectable({
@@ -21,7 +20,7 @@ export class OrderService {
     private orderUrl = `${environment.foodOrderingBaseApiUrl}/orders`;
 
     constructor(private router: Router,
-        private httpClient: HttpClient) {
+                private httpClient: HttpClient) {
     }
 
     // Get Checkout Items
@@ -30,7 +29,7 @@ export class OrderService {
             observer.next(state.checkoutItems);
             observer.complete();
         });
-        return <Observable<any>>itemsStream;
+        return itemsStream as Observable<any>;
     }
 
     saveNewOrder(userId: number, orderDto: OrderDto) {
@@ -38,19 +37,19 @@ export class OrderService {
     }
 
     getOrderByUser(userId: number) {
-        return this.httpClient.get<OrderResponsePageable>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders?pageSize=5&sortBy=orderTime&sortDir=desc`)
+        return this.httpClient.get<OrderResponsePageable>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders?pageSize=5&sortBy=orderTime&sortDir=desc`);
     }
 
     getOrderById(userId: number, id: number) {
-        return this.httpClient.get<OrderResponse>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders/${id}`)
+        return this.httpClient.get<OrderResponse>(`${environment.foodOrderingBaseApiUrl}/users/${userId}/orders/${id}`);
     }
 
     // Create order
     public createOrder(product: any, details: any, orderId: any, amount: any) {
-        var item = {
+        const item = {
             shippingDetails: details,
-            product: product,
-            orderId: orderId,
+            product,
+            orderId,
             totalAmount: amount
         };
         state.checkoutItems = item;
@@ -60,7 +59,7 @@ export class OrderService {
     }
 
     public createZaloPayOrder(paymentInfo: PaymentInfo, address: string): Observable<any> {
-        var item = {
+        const item = {
             shippingAddress: address,
             product: paymentInfo.items,
             orderId: paymentInfo.orderInfo.orderId,
@@ -72,19 +71,7 @@ export class OrderService {
         return this.httpClient.post<any>(this.purchaseUrl, paymentInfo);
     }
 
-    getOrderStatusUpdates(orderId: string): Observable<string> {
-        const response: Observable<string> = this.httpClient.get<GetOrderDetailResponse>(this.purchaseUrl + `/success/${orderId}`).pipe(
-            map(res => res.orderStatus)
-        );
-        return response;
-    }
-
     getShippingCost(address: string, shopId: number) {
         return this.httpClient.get<ShippingResponse>(this.orderUrl + `/cost?address=${address}&shopId=${shopId}`);
     }
-}
-
-interface GetOrderDetailResponse {
-    orderId: string;
-    orderStatus: string;
 }

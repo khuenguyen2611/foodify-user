@@ -11,7 +11,7 @@ import { Product } from '../classes/product';
 })
 export class UserService {
 
-  private baseUrl = `${environment.foodOrderingBaseApiUrl}/users`
+  private baseUrl = `${environment.foodOrderingBaseApiUrl}/users`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -27,17 +27,17 @@ export class UserService {
     return this.httpClient.put<User>(this.baseUrl + `/${userId}`, user);
   }
 
-  //Addresses
+  // Addresses
   getAddressesByUser(userId: number) {
     return this.httpClient.get<ResponseAddresses>(this.baseUrl + `/${userId}/addresses`);
   }
 
   createAddressForUser(userId: number, address: Address) {
-    return this.httpClient.post<StringBoolObject>(this.baseUrl + `/${userId}/addresses`, address)
+    return this.httpClient.post<StringBoolObject>(this.baseUrl + `/${userId}/addresses`, address);
   }
 
   updateUserAddress(userId: number, addressId: number, updateAddress: Address) {
-    return this.httpClient.put<Address>(this.baseUrl + `/${userId}/addresses/${addressId}`, updateAddress)
+    return this.httpClient.put<Address>(this.baseUrl + `/${userId}/addresses/${addressId}`, updateAddress);
   }
 
   updateUserDefaultAddress(userId: number, defaultAddressId: number) {
@@ -45,16 +45,16 @@ export class UserService {
   }
 
   deleteUserAddress(userId: number, addressId: number) {
-    return this.httpClient.delete(this.baseUrl + `/${userId}/addresses/${addressId}`)
+    return this.httpClient.delete(this.baseUrl + `/${userId}/addresses/${addressId}`);
   }
 
-  //Products
-  getLoveProductsByUser(userId: number) {
-    return this.httpClient.get<ResponseProducts>(this.baseUrl + `/${userId}/loves`)
+  // Products
+  getFavouriteProductsByUser(userId: number) {
+    return this.httpClient.get<ResponseProducts>(this.baseUrl + `/${userId}/loves`);
   }
 
-  deleteLoveProductByUser(userId: number, productId: number) {
-    return this.httpClient.delete(this.baseUrl + `/${userId}/loves/${productId}`)
+  deleteFavouriteProductByUser(userId: number, productId: number) {
+    return this.httpClient.delete(this.baseUrl + `/${userId}/loves/${productId}`);
   }
 
   //Get User By Token

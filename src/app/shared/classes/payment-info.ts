@@ -1,5 +1,5 @@
 import {ProductDto} from './product-dto';
-import {OrderInfo} from './OrderInfo';
+import {OrderInfo} from './order-info';
 
 export class PaymentInfo {
 

@@ -1,8 +1,8 @@
-import { User } from "./user";
+import { User } from './user';
 
 export class Comment {
     id: number;
     content: string;
     rating: number;
-    user: User
+    user: User;
 }

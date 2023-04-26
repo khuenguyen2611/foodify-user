@@ -1,7 +1,7 @@
 export class ShippingResponse {
     distance: number;
     cost: number;
-    location: Location
+    location: Location;
 }
 
 export class Location {
