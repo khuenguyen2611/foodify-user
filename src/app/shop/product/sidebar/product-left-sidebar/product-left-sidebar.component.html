@@ -110,7 +110,7 @@
                                         
                                     </div> -->
                                     <div class="product-buttons">
-                                        <a class="mx-0 btn btn-solid" (click)="addToCart(product)">Thêmvào giỏ</a>
+                                        <a class="mx-0 btn btn-solid" (click)="addToCart(product)">Thêm vào giỏ</a>
                                     </div>
                                     <div class="border-product">
                                         <h6 class="product-title">Chi tiết sản phẩm</h6>
@@ -187,17 +187,21 @@
                                                             <div
                                                                 class="d-flex justify-content-between align-items-center">
                                                                 <div class="user d-flex flex-row align-items-center">
-                                                                    <img [src]="comment?.user?.imageUrl" width="60" class="user-img rounded-circle me-2">
-                                                                    
+                                                                    <img [src]="comment?.user?.imageUrl" width="60"
+                                                                        class="user-img rounded-circle me-2">
+
                                                                     <div>
-                                                                        <div class="fw-bold text-dark me-3 fs-name">{{ comment?.user?.fullName}}</div>
-                                                                        <bar-rating [rate]="comment?.rating" [readOnly]="true"></bar-rating>
-                                                                        <div class="style-comment fst-italic">{{ comment?.content }}</div>
+                                                                        <div class="fw-bold text-dark me-3 fs-name">{{
+                                                                            comment?.user?.fullName}}</div>
+                                                                        <bar-rating [rate]="comment?.rating"
+                                                                            [readOnly]="true"></bar-rating>
+                                                                        <div class="style-comment fst-italic">{{
+                                                                            comment?.content }}</div>
                                                                     </div>
-                                                                    
-                                                                    
+
+
                                                                 </div>
-                                                                
+
                                                             </div>
 
                                                             <!-- <div

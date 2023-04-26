@@ -10,6 +10,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
@@ -27,6 +31,10 @@ export class RegisterComponent implements OnInit {
     isHaveDistrict: boolean = false;
 
     showPassword: boolean = false;
+
+    //Phonenumber
+    reCaptchaVerifier;
+    verify;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -47,6 +55,7 @@ export class RegisterComponent implements OnInit {
             email: new FormControl("", [Validators.required, Validators.email]),
             dob: new FormControl("", [Validators.required]),
             phoneNumber: new FormControl("", [Validators.required, Validators.pattern(/^(((\+|)84)|0)([1-9]{1})([0-9]{8})\b/)]),
+            otpCode: new FormControl("", [Validators.required]),
             fullName: new FormControl("", [Validators.required, Validators.minLength(2)]),
             identifiedCode: new FormControl("", [Validators.required, Validators.pattern(/^(\d{9}|\d{12})$/)]),
             password: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
@@ -55,34 +64,34 @@ export class RegisterComponent implements OnInit {
             district: new FormControl("", [Validators.required]),
             ward: new FormControl("", [Validators.required]),
         },
-        {
-            validator: this.ConfirmedValidator("password", "confirmPassword"),
-        }
+            {
+                validator: this.ConfirmedValidator("password", "confirmPassword"),
+            }
         );
     }
 
     // Validation for password and confirm password
-  ConfirmedValidator(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-      if (matchingControl.errors && !matchingControl.errors.confirmedValidator) {
-        return;
-      }
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ confirmedValidator: true });
-      } else {
-        matchingControl.setErrors(null);
-      }
-    };
-  }
+    ConfirmedValidator(controlName: string, matchingControlName: string) {
+        return (formGroup: FormGroup) => {
+            const control = formGroup.controls[controlName];
+            const matchingControl = formGroup.controls[matchingControlName];
+            if (matchingControl.errors && !matchingControl.errors.confirmedValidator) {
+                return;
+            }
+            if (control.value !== matchingControl.value) {
+                matchingControl.setErrors({ confirmedValidator: true });
+            } else {
+                matchingControl.setErrors(null);
+            }
+        };
+    }
 
     onSignUp() {
 
         if (this.registerForm.invalid) {
             this.registerForm.markAllAsTouched();
             return;
-        } 
+        }
 
         const register = new Register();
         const newAddress = new Address();
@@ -113,11 +122,19 @@ export class RegisterComponent implements OnInit {
                                 this.toastService.error("CCCD/CMND bạn sử dụng đã được đăng ký. Vui lòng chọn một CCCD/CMND khác!")
                             }
                             else {
-                                this.authService.SignUpUser(register).subscribe((user) => {
-                                    this.toastService.success(`Đăng ký người dùng ${user.fullName} thành công`);
-                                    this.firebaseAuthService.signUp(register.email, this.userPassword.value);
-                                    this.router.navigate(['/home/login']);
+                                //Firebase Send Code here
+                                const credential = firebase.auth.PhoneAuthProvider.credential(this.verify, this.userOtp.value);
+                                firebase.auth().signInWithCredential(credential).then((credential) => {
+                                    credential.user.delete();
+                                    this.authService.SignUpUser(register).subscribe((user) => {
+                                        this.toastService.success(`Đăng ký người dùng ${user.fullName} thành công`);
+                                        this.firebaseAuthService.signUp(register.email, this.userPassword.value);
+                                        this.router.navigate(['/home/login']);
+                                    })
                                 })
+                                    .catch((error) => {
+                                        this.toastService.error("Mã OTP không đúng. Vui lòng kiểm tra lại.")
+                                    })
                             }
                         }
                     })
@@ -128,6 +145,46 @@ export class RegisterComponent implements OnInit {
 
 
         // this.firebaseAuthService.signUp(this.userEmail.value, this.userPassword.value);
+    }
+
+    getOTP() {
+        if (this.userPhoneNumber.value == '') {
+            this.toastService.error("Vui lòng nhập số điện thoại.")
+        }
+        else {
+            const reg: Register = new Register()
+            reg.phoneNumber = this.userPhoneNumber.value;
+            this.authService.checkEmailOrPhoneNumberExist(reg).subscribe((response) => {
+                if (response.title == 'phoneNumExist') {
+                    this.toastService.error("Số điện thoại bạn đang sử dụng đã tồn tại. Vui lòng chọn một số điện thoại khác.")
+                }
+                else {
+                    this.reCaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+                        'recapcha',
+                        {
+                            size: 'visible',
+                        }
+                    );
+
+                    firebase
+                        .auth()
+                        .signInWithPhoneNumber('+84 ' + this.userPhoneNumber.value, this.reCaptchaVerifier)
+                        .then((confirmationResult) => {
+
+                            this.verify = confirmationResult.verificationId;
+                        })
+                        .catch((error) => {
+                            //Catch error
+
+                            console.log(error.message);
+                            alert(error.message);
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 5000);
+                        });
+                }
+            })
+        }
     }
 
     //District & Ward
@@ -159,6 +216,7 @@ export class RegisterComponent implements OnInit {
     get userDob() { return this.registerForm.get('dob') }
     get userIdentifiedCode() { return this.registerForm.get('identifiedCode') }
     get userPhoneNumber() { return this.registerForm.get('phoneNumber') }
+    get userOtp() { return this.registerForm.get('otpCode') }
     get userEmail() { return this.registerForm.get('email') }
     get userAddress() { return this.registerForm.get('address') }
     get userDistrict() { return this.registerForm.get('district'); }
