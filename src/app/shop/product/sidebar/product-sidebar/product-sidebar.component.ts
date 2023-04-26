@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ProductDetailsMainSlider, ProductDetailsThumbSlider} from '../../../../shared/data/slider';
-import {Product} from '../../../../shared/classes/product';
-import {ProductService} from '../../../../shared/services/product.service';
-import {FirebaseService} from 'src/app/shared/services/firebase.service';
-import {CommentService} from 'src/app/shared/services/comment.service';
-import {Comment} from 'src/app/shared/classes/comment';
-import {ToastrService} from 'ngx-toastr';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductDetailsMainSlider, ProductDetailsThumbSlider } from '../../../../shared/data/slider';
+import { Product } from '../../../../shared/classes/product';
+import { ProductService } from '../../../../shared/services/product.service';
+import { FirebaseService } from 'src/app/shared/services/firebase.service';
+import { CommentService } from 'src/app/shared/services/comment.service';
+import { Comment } from 'src/app/shared/classes/comment';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-product-sidebar',
@@ -14,7 +15,8 @@ import {ToastrService} from 'ngx-toastr';
     styleUrls: ['./product-sidebar.component.scss']
 })
 export class ProductSidebarComponent implements OnInit {
-    private userId = this.firebaseService.getUserId();
+    private userId: number;
+    private token: string = localStorage.getItem('jwt-token')
 
     comments: Comment[] = [];
 
@@ -31,6 +33,7 @@ export class ProductSidebarComponent implements OnInit {
     constructor(
         private firebaseService: FirebaseService,
         private route: ActivatedRoute,
+        private userService: UserService,
         private router: Router,
         private toastService: ToastrService,
         private commentService: CommentService,
@@ -39,8 +42,11 @@ export class ProductSidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadProductData();
-        this.loadCommentData();
+        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+            this.userId = userInfo.userId;
+            this.loadProductData();
+            this.loadCommentData();
+        })
     }
 
     loadProductData() {

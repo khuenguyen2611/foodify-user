@@ -12,7 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
     templateUrl: './checkout.component.html',
     styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit, OnDestroy {
+export class CheckoutComponent implements OnInit {
     private userId: number;
     private token: string = localStorage.getItem('jwt-token')
 
@@ -72,3 +72,4 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             this.currentStep = 1;
         }
     }
+}

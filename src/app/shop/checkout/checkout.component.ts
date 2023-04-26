@@ -6,7 +6,6 @@ import { environment } from '../../../environments/environment';
 import { Product } from "../../shared/classes/product";
 import { ProductService } from "../../shared/services/product.service";
 import { OrderService } from "../../shared/services/order.service";
-import { OrderInfo } from "../../shared/classes/OrderInfo";
 import { PaymentInfo } from "../../shared/classes/payment-info";
 import { ProductDto } from "../../shared/classes/product-dto";
 import { Router } from "@angular/router";
@@ -17,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OrderDto } from 'src/app/shared/classes/order-dto';
 import { OrderDetail } from 'src/app/shared/classes/order-detail'
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
+import { OrderInfo } from 'src/app/shared/classes/order-info';
 
 @Component({
     selector: 'app-checkout',
@@ -69,7 +69,6 @@ export class CheckoutComponent implements OnInit {
             })
             this.productService.cartItems.subscribe(response => this.products = response);
             this.getTotal.subscribe(amount => this.amount = amount);
-            this.initConfig();
         })
     }
 

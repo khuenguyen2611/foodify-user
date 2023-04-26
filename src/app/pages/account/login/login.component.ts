@@ -1,9 +1,9 @@
-import {Component, NgZone, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {FirebaseService} from '../../../shared/services/firebase.service';
-import {ToastrService} from 'ngx-toastr';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FirebaseService } from '../../../shared/services/firebase.service';
+import { ToastrService } from 'ngx-toastr';
 import firebase from 'firebase/compat/app';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 const config = {
     apiKey: 'AIzaSyAZFFIuXkbgdp2F-Em4CK2z8kVJ2L4p_UU',
@@ -80,37 +80,5 @@ export class LoginComponent implements OnInit {
 
     get getSignInPassword() {
         return this.loginForm.get('password').getRawValue();
-    }
-
-    getPhoneOTP() {
-        this.firebaseAuthService.getPhoneOtp(this.phoneNumber);
-    }
-
-    onOtpChange(otp: string) {
-        this.otp = otp;
-    }
-
-    handleClick() {
-        console.log(this.otp);
-        const credential = firebase.auth.PhoneAuthProvider.credential(
-            this.verify,
-            this.otp
-        );
-
-        console.log(credential);
-        firebase
-            .auth()
-            .signInWithCredential(credential)
-            .then((response) => {
-                console.log(response);
-                localStorage.setItem('user_data', JSON.stringify(response));
-                this.ngZone.run(() => {
-                    this.router.navigate(['/home']);
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-                alert(error.message);
-            });
     }
 }

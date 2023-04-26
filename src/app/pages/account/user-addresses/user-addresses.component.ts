@@ -70,6 +70,7 @@ export class UserAddressesComponent implements OnInit {
         newAddress.district = this.district;
         newAddress.ward = this.ward
         this.userService.createAddressForUser(this.userId, newAddress).subscribe((response) => {
+
             if (response.title == 'Address has existed') {
                 this.message = 'Địa chỉ đã tồn tại. Vui lòng chọn một địa chỉ khác.'
                 this.modalService.open(this.messageModal,
@@ -80,6 +81,7 @@ export class UserAddressesComponent implements OnInit {
                         windowClass: 'Quickview'
                     });
             }
+
             else {
                 this.message = 'Tạo địa chỉ mới thành công.'
                 this.modalService.open(this.messageModal,
@@ -95,48 +97,48 @@ export class UserAddressesComponent implements OnInit {
     }
 
 
-    loadData() {
-        this.userService.getUserById(this.userId).subscribe((user) => {
-            this.defaultAddr = user.defaultAddress;
-        });
-        this.userService.getAddressesByUser(this.userId).subscribe({
-            next: (data) => {
-                this.addresses = data.addresses;
-            }
-        });
-    }
+    // loadData() {
+    //     this.userService.getUserById(this.userId).subscribe((user) => {
+    //         this.defaultAddr = user.defaultAddress;
+    //     });
+    //     this.userService.getAddressesByUser(this.userId).subscribe({
+    //         next: (data) => {
+    //             this.addresses = data.addresses;
+    //         }
+    //     });
+    // }
 
-    createNewAddress() {
-        const newAddress = new Address();
-        newAddress.address = this.address;
-        newAddress.district = this.district;
-        newAddress.ward = this.ward;
-        this.userService.createAddressForUser(this.userId, newAddress).subscribe((response) => {
-            if (response.title == 'Address has existed') {
-                this.message = 'Địa chỉ đã tồn tại. Vui lòng chọn một địa chỉ khác.';
-                this.modalService.open(this.messageModal,
-                    {
-                        size: 'lg',
-                        ariaLabelledBy: 'modal-basic-title',
-                        centered: true,
-                        windowClass: 'Quickview'
-                    });
-            } else {
-                this.message = 'Tạo địa chỉ mới thành công.';
-                this.modalService.open(this.messageModal,
-                    {
-                        size: 'lg',
-                        ariaLabelledBy: 'modal-basic-title',
-                        centered: true,
-                        windowClass: 'Quickview'
-                    });
-                this.loadData();
-            }
-        });
-        this.modalService.dismissAll();
+    // createNewAddress() {
+    //     const newAddress = new Address();
+    //     newAddress.address = this.address;
+    //     newAddress.district = this.district;
+    //     newAddress.ward = this.ward;
+    //     this.userService.createAddressForUser(this.userId, newAddress).subscribe((response) => {
+    //         if (response.title == 'Address has existed') {
+    //             this.message = 'Địa chỉ đã tồn tại. Vui lòng chọn một địa chỉ khác.';
+    //             this.modalService.open(this.messageModal,
+    //                 {
+    //                     size: 'lg',
+    //                     ariaLabelledBy: 'modal-basic-title',
+    //                     centered: true,
+    //                     windowClass: 'Quickview'
+    //                 });
+    //         } else {
+    //             this.message = 'Tạo địa chỉ mới thành công.';
+    //             this.modalService.open(this.messageModal,
+    //                 {
+    //                     size: 'lg',
+    //                     ariaLabelledBy: 'modal-basic-title',
+    //                     centered: true,
+    //                     windowClass: 'Quickview'
+    //                 });
+    //             this.loadData();
+    //         }
+    //     });
+    //     this.modalService.dismissAll();
 
-        this.resetAddressValue();
-    }
+    //     this.resetAddressValue();
+    // }
 
     editAddress() {
         const editAddress = new Address();
