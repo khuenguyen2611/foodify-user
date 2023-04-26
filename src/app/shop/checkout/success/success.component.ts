@@ -21,7 +21,8 @@ import { Transaction } from 'src/app/shared/classes/transaction';
     styleUrls: ['./success.component.scss']
 })
 export class SuccessComponent implements OnInit, OnDestroy {
-    private userId: number = this.firebaseService.getUserId();
+    private userId: number;
+    private token = localStorage.getItem('jwt-token');
     private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
     private shippingInfo: ShippingResponse = JSON.parse(localStorage.getItem('shippingInfo'));
 
@@ -36,52 +37,53 @@ export class SuccessComponent implements OnInit, OnDestroy {
 
     constructor(public productService: ProductService,
         private orderService: OrderService,
-        private firebaseService: FirebaseService,
         private toastService: ToastrService,
         private userService: UserService,
-        private transactionService: TransactionService,
         private router: Router) {
     }
 
     ngOnInit(): void {
-        const details: OrderDetail[] = [];
+        this.userService.getUserByToken(this.token).subscribe(userInfo => {
+            this.userId = userInfo.userId;
 
-        this.cartProducts.forEach((cartItem) => {
-            const detail = new OrderDetail();
-            detail.productId = cartItem.id;
-            detail.quantity = cartItem.quantity;
-            details.push(detail);
-        })
+            const details: OrderDetail[] = [];
 
-        this.orderService.checkoutItems.subscribe({
-            next: (res) => {
-                this.orderDetails = res;
-                const newOrder = new OrderDto();
+            this.cartProducts.forEach((cartItem) => {
+                const detail = new OrderDetail();
+                detail.productId = cartItem.id;
+                detail.quantity = cartItem.quantity;
+                details.push(detail);
+            })
 
-                if (res.shippingAddress == 'Đến shop lấy') {
-                    newOrder.address = res.shippingAddress;
-                    newOrder.lat = '0';
-                    newOrder.lng = '0';
-                    newOrder.shippingCost = 0;
-                }
-                else {
-                    newOrder.address = res.shippingAddress;
-                    newOrder.lat = this.shippingInfo.location.lat;
-                    newOrder.lng = this.shippingInfo.location.lng;
-                    newOrder.shippingCost = this.shippingInfo.cost;
-                }
-                newOrder.paymentMethod = 'ZALO PAY'
-                newOrder.orderDetails = details;
-                newOrder.orderTrackingNumber = res.orderId;
+            this.orderService.checkoutItems.subscribe({
+                next: (res) => {
+                    this.orderDetails = res;
+                    const newOrder = new OrderDto();
 
-                this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
-                    next: (order) => {
-                        this.newId = order.id;
+                    if (res.shippingAddress == 'Đến shop lấy') {
+                        newOrder.address = res.shippingAddress;
+                        newOrder.lat = '0';
+                        newOrder.lng = '0';
+                        newOrder.shippingCost = 0;
                     }
-                })
-            }
-        });
+                    else {
+                        newOrder.address = res.shippingAddress;
+                        newOrder.lat = this.shippingInfo.location.lat;
+                        newOrder.lng = this.shippingInfo.location.lng;
+                        newOrder.shippingCost = this.shippingInfo.cost;
+                    }
+                    newOrder.paymentMethod = 'ZALO PAY'
+                    newOrder.orderDetails = details;
+                    newOrder.orderTrackingNumber = res.orderId;
 
+                    this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
+                        next: (order) => {
+                            this.router.navigate(['/home/order', order.id]).then(() => { window.location.reload() });
+                        }
+                    })
+                }
+            });
+        })
     }
 
     goToOrder() {

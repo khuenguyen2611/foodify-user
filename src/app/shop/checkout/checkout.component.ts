@@ -25,7 +25,8 @@ import { FirebaseService } from 'src/app/shared/services/firebase.service';
     styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
-    private userId = this.firebaseService.getUserId();
+    private userId: number;
+    private token: string = localStorage.getItem('jwt-token')
     private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
 
     addresses: Address[] = [];
@@ -64,15 +65,19 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userService.getUserById(this.userId).subscribe((response) => {
-            this.userName = response.fullName
+        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+            this.userId = userInfo.userId;
+
+            this.userService.getUserById(this.userId).subscribe((response) => {
+                this.userName = response.fullName
+            })
+            this.userService.getAddressesByUser(this.userId).subscribe((response) => {
+                this.addresses = response.addresses;
+            })
+            this.productService.cartItems.subscribe(response => this.products = response);
+            this.getTotal.subscribe(amount => this.amount = amount);
+            this.initConfig();
         })
-        this.userService.getAddressesByUser(this.userId).subscribe((response) => {
-            this.addresses = response.addresses;
-        })
-        this.productService.cartItems.subscribe(response => this.products = response);
-        this.getTotal.subscribe(amount => this.amount = amount);
-        this.initConfig();
     }
 
     public get getSubTotal(): Observable<number> {
@@ -126,9 +131,10 @@ export class CheckoutComponent implements OnInit {
             newOrder.orderDetails = details;
             this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
                 next: (order) => {
-                    this.toastService.success("Đặt đơn thành công");
-                    this.router.navigate(['/home/order', order.id]);
                     localStorage.removeItem('cartItems');
+                    this.toastService.success("Đặt đơn thành công");
+                    this.router.navigate(['/home/order', order.id]).then(() => { window.location.reload() });
+
                 }
             })
         }
@@ -152,9 +158,9 @@ export class CheckoutComponent implements OnInit {
             newOrder.orderDetails = details;
             this.orderService.saveNewOrder(this.userId, newOrder).subscribe({
                 next: (order) => {
-                    this.toastService.success("Đặt đơn thành công");
-                    this.router.navigate(['/home/order', order.id]);
                     localStorage.removeItem('cartItems');
+                    this.toastService.success("Đặt đơn thành công");
+                    this.router.navigate(['/home/order', order.id]).then(() => { window.location.reload() });
                 }
             })
         }

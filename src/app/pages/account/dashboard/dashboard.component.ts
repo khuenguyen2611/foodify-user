@@ -11,8 +11,9 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class DashboardComponent implements OnInit {
 
   public openDashboard: boolean = false;
+  private token: string = localStorage.getItem('jwt-token');
 
-  public userId = this.firebaseService.getUserId();
+  public userId: number;
   public user: User;
 
   constructor(
@@ -21,7 +22,10 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUserInfo();
+    this.userService.getUserByToken(this.token).subscribe(userInfo => {
+      this.userId = userInfo.userId;
+      this.getUserInfo();
+    })
   }
 
   getUserInfo() {

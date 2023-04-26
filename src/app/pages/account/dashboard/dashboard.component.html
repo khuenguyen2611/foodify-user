@@ -36,11 +36,12 @@
                             <h2>Tài khoản của tôi</h2>
                         </div>
                         <div class="welcome-msg">
-                            <p>Xin chào, {{ user.fullName }} !</p>
+                            <p>Xin chào, {{ user?.fullName }} !</p>
                             <p>Đối với nền tảng web, chúng mình chỉ hỗ trợ bạn một số chức năng chính. Nếu bạn muốn khám
                                 phá thêm,
-                                tải ngay ứng dụng của chúng mình trên nền tảng Android tại <a
-                                    href="https://www.facebook.com/" target="_blank">liên kết</a> này.
+                                tải ngay ứng dụng của chúng mình trên nền tảng Android tại <a style="color: #FF8084;"
+                                    href="https://nezumi-onedrive.vercel.app/api/raw/?path=/Foodify/foodify.apk"
+                                    target="_blank">liên kết</a> này.
                             </p>
                         </div>
                         <div class="box-account box-info">
@@ -55,9 +56,9 @@
                                             <!-- <a href="javascript:void(0)">Edit</a> -->
                                         </div>
                                         <div class="box-content">
-                                            <p>Số điện thoại : {{ user.phoneNumber }}</p>
-                                            <p>Email : {{ user.email }}</p>
-                                            <p *ngIf="!user.isLocked"><a href="javascript:void(0)">Đã xác thực</a>
+                                            <p>Số điện thoại : {{ user?.phoneNumber }}</p>
+                                            <p>Email : {{ user?.email }}</p>
+                                            <p *ngIf="!user?.isLocked"><a href="javascript:void(0)">Đã xác thực</a>
                                             </p>
                                         </div>
                                     </div>
@@ -69,9 +70,9 @@
                                             <a [routerLink]="['/home/profile']">Chỉnh sửa</a>
                                         </div>
                                         <div class="box-content">
-                                            <p>Họ và tên : {{ user.fullName }}</p>
-                                            <p>Ngày sinh : {{ user.dateOfBirth }}</p>
-                                            <p>CCCD/CMND : {{ user.identifiedCode }}</p>
+                                            <p>Họ và tên : {{ user?.fullName }}</p>
+                                            <p>Ngày sinh : {{ user?.dateOfBirth }}</p>
+                                            <p>CCCD/CMND : {{ user?.identifiedCode }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -83,13 +84,13 @@
                                         <a [routerLink]="['/home/addresses']">Quản lý địa chỉ</a>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6" *ngFor="let address of user.addresses">
-                                            <h6 *ngIf="user.defaultAddress != address.id">{{ address.address }}</h6>
-                                            <h6 *ngIf="user.defaultAddress == address.id">{{ address.address }} (mặc
+                                        <div class="col-sm-6" *ngFor="let address of user?.addresses">
+                                            <h6 *ngIf="user?.defaultAddress != address?.id">{{ address?.address }}</h6>
+                                            <h6 *ngIf="user?.defaultAddress == address?.id">{{ address?.address }} (mặc
                                                 định)</h6>
                                             <address>
-                                                {{address.ward}}<br>
-                                                {{address.district}}<br>
+                                                {{address?.ward}}<br>
+                                                {{address?.district}}<br>
                                                 <!-- <a href="javascript:void(0)"
                                                     *ngIf="user.defaultAddress == address.id">Thay đổi</a> -->
                                             </address>

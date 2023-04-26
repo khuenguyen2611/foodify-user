@@ -5,6 +5,7 @@ import { Product } from "../../../classes/product";
 import { ProductService } from "../../../services/product.service";
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-product-box-two',
@@ -12,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./product-box-two.component.scss']
 })
 export class ProductBoxTwoComponent implements OnInit {
-    private userId = this.firebaseService.getUserId();
+    private userId: number;
+    token: string = localStorage.getItem('jwt-token')
 
     @Input() product: Product;
     @Input() currency: any = this.productService.Currency; // Default Currency
@@ -26,10 +28,14 @@ export class ProductBoxTwoComponent implements OnInit {
     constructor(
         private productService: ProductService,
         private firebaseService: FirebaseService,
+        private userService: UserService,
         private toastrService: ToastrService) {
     }
 
     ngOnInit(): void {
+        this.userService.getUserByToken(this.token).subscribe(userInfo => {
+            this.userId = userInfo.userId;
+        })
     }
 
     // Get Product Color

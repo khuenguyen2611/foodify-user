@@ -15,9 +15,10 @@ export class HeaderComponent implements OnInit {
     @Input() topbar: boolean = true; // Default True
     @Input() sticky: boolean = false; // Default false
 
+    private token: string = localStorage.getItem('jwt-token')
     public isLoggedIn = this.firebaseService.IsLoggedIn();
-    public userId = this.firebaseService.getUserId();
-    public userEmail = this.firebaseService.getEmail();
+    public userId: number;
+    public userEmail: string;
     public userFullName: string;
 
 
@@ -27,14 +28,20 @@ export class HeaderComponent implements OnInit {
         private firebaseService: FirebaseService,
         private userService: UserService
     ) {
+
     }
 
     ngOnInit(): void {
-        this.userService.getUserById(this.userId).subscribe((user) => {
-            this.userFullName = user.fullName;
-            let nameParts = this.userFullName.split(" ");
-            this.userFullName = nameParts[nameParts.length - 1];
+        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+            this.userId = userInfo.userId;
+            this.userEmail = userInfo.userEmail;
+            this.userService.getUserById(this.userId).subscribe((user) => {
+                this.userFullName = user.fullName;
+                let nameParts = this.userFullName.split(" ");
+                this.userFullName = nameParts[nameParts.length - 1];
+            })
         })
+
     }
 
     // @HostListener Decorator

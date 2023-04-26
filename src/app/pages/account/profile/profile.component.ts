@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { userInfo } from 'os';
 import { User } from 'src/app/shared/classes/user';
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -12,7 +13,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class ProfileComponent implements OnInit {
   //Logged Info
-  userId = this.firebaseService.getUserId();
+  userId: number;
+  token: string = localStorage.getItem('jwt-token')
 
   editForm: FormGroup;
 
@@ -24,16 +26,17 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private firebaseService: FirebaseService,
     private userService: UserService,
     private modalService: NgbModal
   ) {
-
+    this.createEditForm();
   }
 
   ngOnInit(): void {
-    this.createEditForm();
-    this.patchUserData();
+    this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+      this.userId = userInfo.userId;
+      this.patchUserData();
+    })
   }
 
   createEditForm() {

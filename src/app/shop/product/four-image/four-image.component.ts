@@ -4,6 +4,7 @@ import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
 import { SizeModalComponent } from "../../../shared/components/modal/size-modal/size-modal.component";
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-four-image',
@@ -11,7 +12,8 @@ import { FirebaseService } from 'src/app/shared/services/firebase.service';
     styleUrls: ['./four-image.component.scss']
 })
 export class FourImageComponent implements OnInit {
-    private userId = this.firebaseService.getUserId();
+    private userId: number;
+    private token = localStorage.getItem('jwt-token');
 
     public product: Product = {
         averageRating: 0,
@@ -37,12 +39,16 @@ export class FourImageComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
         private router: Router,
+        private userService: UserService,
         public productService: ProductService,
         private firebaseService: FirebaseService) {
         this.route.data.subscribe(response => this.product = response.data);
     }
 
     ngOnInit(): void {
+        this.userService.getUserByToken(this.token).subscribe(userInfo => {
+            this.userId = userInfo.userId;
+        })
     }
 
     // Get Product Color

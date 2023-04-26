@@ -16,7 +16,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class UserAddressesComponent implements OnInit {
 
-  private userId = this.firebaseService.getUserId();
+  private userId: number;
+  token: string = localStorage.getItem('jwt-token');
   defaultAddr: number;
   addresses?: Address[] = [];
   choosenId: number;
@@ -47,8 +48,11 @@ export class UserAddressesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllDistricts();
-    this.loadData();
+    this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+      this.userId = userInfo.userId;
+      this.getAllDistricts();
+      this.loadData();
+    })
   }
 
   loadData() {

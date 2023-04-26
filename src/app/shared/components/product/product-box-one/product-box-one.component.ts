@@ -5,6 +5,7 @@ import { Product } from '../../../classes/product';
 import { ProductService } from '../../../services/product.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-product-box-one',
@@ -12,7 +13,8 @@ import { FirebaseService } from 'src/app/shared/services/firebase.service';
   styleUrls: ['./product-box-one.component.scss']
 })
 export class ProductBoxOneComponent implements OnInit {
-  private userId = this.firebaseService.getUserId();
+  private userId: number;
+  token: string = localStorage.getItem('jwt-token');
 
   @Input() product: Product;
   @Input() currency: any = this.productService.Currency; // Default Currency 
@@ -28,6 +30,7 @@ export class ProductBoxOneComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private userService: UserService,
     private router: Router,
     private firebaseService: FirebaseService) { }
 
@@ -35,6 +38,9 @@ export class ProductBoxOneComponent implements OnInit {
     if (this.loader) {
       setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
     }
+    this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+      this.userId = userInfo.userId;
+    })
   }
 
   // Get Product Color

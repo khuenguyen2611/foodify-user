@@ -8,6 +8,7 @@ import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { CommentService } from 'src/app/shared/services/comment.service';
 import { Comment } from 'src/app/shared/classes/comment';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-product-left-sidebar',
@@ -15,7 +16,8 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./product-left-sidebar.component.scss']
 })
 export class ProductLeftSidebarComponent implements OnInit {
-    private userId = this.firebaseService.getUserId();
+    private userId: number;
+    private token = localStorage.getItem('jwt-token');
 
     comments: Comment[] = [];
 
@@ -34,6 +36,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
     constructor(
         private firebaseService: FirebaseService,
+        private userService: UserService,
         private route: ActivatedRoute,
         private router: Router,
         private toastService: ToastrService,
@@ -43,8 +46,11 @@ export class ProductLeftSidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadProductData();
-        this.loadCommentData();
+        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+            this.userId = userInfo.userId;
+            this.loadProductData();
+            this.loadCommentData();
+        })
     }
 
     loadProductData() {

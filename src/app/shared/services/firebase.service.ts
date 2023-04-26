@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from "@angular/router";
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
+import { userInfo } from 'os';
 
 @Injectable({
     providedIn: 'root'
@@ -20,10 +21,7 @@ export class FirebaseService {
         private userService: UserService,
         private toastService: ToastrService,
         private router: Router) {
-        this.userService.getUserByToken(this.jwtToken).subscribe((userInfo) => {
-            this.userId = userInfo.userId;
-            this.userEmail = userInfo.userEmail;
-        })
+
     }
 
     signUp(email: string, password: string) {

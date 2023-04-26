@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductSlider } from '../../shared/data/slider';
 import { Product } from '../../shared/classes/product';
 import { ProductService } from '../../shared/services/product.service';
+import { SliderService } from 'src/app/shared/services/slider.service';
 
 @Component({
     selector: 'app-shop',
@@ -22,22 +23,20 @@ export class ShopComponent implements OnInit {
     sortDir = 'asc'
     theTotalElements = 0;
 
-    constructor(public productService: ProductService) {
+    constructor(public productService: ProductService,
+        private sliderService: SliderService) {
         this.productService.getProducts.subscribe(response =>
             this.products = response
         );
+        this.sliderService.getAllSliders().subscribe((sliders) => {
+            sliders.forEach(slider => {
+                this.sliders.push(slider)
+            })
+        })
     }
 
     // Sliders
-    public sliders = [{
-        title: '',
-        subTitle: 'Giảm giá 10%',
-        image: 'assets/images/slider/qc/qc-01.jpg'
-    }, {
-        title: 'save 10%',
-        subTitle: 'fresh vegetables',
-        image: 'assets/images/slider/qc/qc-02.jpg'
-    }];
+    public sliders = [];
 
     // Blogs
     public blogs = [{

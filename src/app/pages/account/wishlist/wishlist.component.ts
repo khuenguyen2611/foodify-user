@@ -10,7 +10,8 @@ import { UserService } from 'src/app/shared/services/user.service';
   styleUrls: ['./wishlist.component.scss']
 })
 export class WishlistComponent implements OnInit {
-  private userId = this.firebaseService.getUserId();
+  private userId: number;
+  token: string = localStorage.getItem('jwt-token');
   public products?: Product[] = [];
 
   private productId: number;
@@ -26,7 +27,10 @@ export class WishlistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadLoveProducts();
+    this.userService.getUserByToken(this.token).subscribe(userInfo => {
+      this.userId = userInfo.userId;
+      this.loadLoveProducts();
+    })
   }
 
   loadLoveProducts() {

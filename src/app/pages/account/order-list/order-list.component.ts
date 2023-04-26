@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OrderResponse } from 'src/app/shared/classes/order-dto';
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { OrderService } from 'src/app/shared/services/order.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-order-list',
@@ -9,14 +10,15 @@ import { OrderService } from 'src/app/shared/services/order.service';
   styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnInit, OnDestroy {
-  private userId = this.firebaseService.getUserId();
   public orders: OrderResponse[];
+  private token: string = localStorage.getItem('jwt-token');
 
   refreshInterval: number = 5000;
   refreshTimeout;
 
   constructor(
     private orderService: OrderService,
+    private userService: UserService,
     private firebaseService: FirebaseService) {
 
   }
@@ -26,19 +28,19 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    console.log("hi")
-    console.log(this.refreshInterval)
-    this.orderService.getOrderByUser(this.userId).subscribe((data) => {
-      this.orders = data.orders
+    this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+      this.orderService.getOrderByUser(userInfo.userId).subscribe((data) => {
+        this.orders = data.orders
+      })
+
+      this.refreshTimeout = setTimeout(() => {
+        this.loadData();
+      }, this.refreshInterval)
     })
 
-    this.refreshTimeout = setTimeout(() => {
-      this.loadData();
-    }, this.refreshInterval)
   }
 
   public ngOnDestroy() {
-    console.log('destroy')
     clearTimeout(this.refreshTimeout);
   }
 }
