@@ -38,7 +38,7 @@
     <div class="product-detail">
         <div class="product-detail-box">
             <a [routerLink]="['/shop/products/', product?.name.replace(' ', '-')]">
-                <div class="edit-product-name">{{ product?.name.length > 20 ? product?.name.slice(0, 20) + '...' :
+                <div class="edit-product-name">{{ product?.name.length > 18 ? product?.name.slice(0, 18) + '...' :
                     product?.name | titlecase }}</div>
             </a>
             <div class="product-price-mlem">

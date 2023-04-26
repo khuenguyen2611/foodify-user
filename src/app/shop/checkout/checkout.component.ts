@@ -45,7 +45,6 @@ export class CheckoutComponent implements OnInit {
     isLoggedIn = false;
 
     constructor(private fb: UntypedFormBuilder,
-        private firebaseService: FirebaseService,
         public productService: ProductService,
         private orderService: OrderService,
         private userService: UserService,
@@ -58,6 +57,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
         this.userService.getUserByToken(this.token).subscribe((userInfo) => {
             this.userId = userInfo.userId;
 
