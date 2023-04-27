@@ -26,6 +26,7 @@ import { OrderInfo } from 'src/app/shared/classes/order-info';
 export class CheckoutComponent implements OnInit {
     private userId: number;
     private token: string = localStorage.getItem('jwt-token')
+    private isLogged: boolean = Boolean(localStorage.getItem('isLoggedIn'));
     private cartProducts: Product[] = JSON.parse(localStorage.getItem('cartItems'));
 
     addresses: Address[] = [];
@@ -57,16 +58,23 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
-        // console.log(this.isLoggedIn);
-        this.userService.getUserById(this.userId).subscribe((response) => {
-            this.userName = response.fullName;
-        });
-        this.userService.getAddressesByUser(this.userId).subscribe((response) => {
-            this.addresses = response.addresses;
-        });
-        this.productService.cartItems.subscribe(response => this.products = response);
-        this.getTotal.subscribe(amount => this.amount = amount);
+        if (!this.isLogged) {
+            this.router.navigate(['/home/login'])
+        }
+        else {
+            this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+                this.userId = userInfo.userId;
+
+                this.userService.getUserById(this.userId).subscribe((response) => {
+                    this.userName = response.fullName;
+                });
+                this.userService.getAddressesByUser(this.userId).subscribe((response) => {
+                    this.addresses = response.addresses;
+                });
+                this.productService.cartItems.subscribe(response => this.products = response);
+                this.getTotal.subscribe(amount => this.amount = amount);
+            })
+        }
     }
 
     public get getSubTotal(): Observable<number> {
