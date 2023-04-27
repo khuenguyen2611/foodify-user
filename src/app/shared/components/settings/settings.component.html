@@ -48,7 +48,7 @@
                 <li>
                     <div class="buttons">
                         <a [routerLink]="['/shop/cart']" class="view-cart">Xem giỏ hàng</a>
-                        <a [routerLink]="['/shop/checkout']" class="checkout">Thanh toán</a>
+                        <a (click)="onCheckOut()" class="checkout">Thanh toán</a>
                     </div>
                 </li>
             </ul>

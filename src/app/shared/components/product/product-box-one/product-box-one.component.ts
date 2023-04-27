@@ -25,7 +25,7 @@ export class ProductBoxOneComponent implements OnInit {
     @ViewChild('quickView') QuickView: QuickViewComponent;
     @ViewChild('cartModal') CartModal: CartModalComponent;
 
-    public ImageSrc: string
+    public ImageSrc: string;
 
     constructor(
         private productService: ProductService,
