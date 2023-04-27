@@ -42,7 +42,7 @@ export class CheckoutComponent implements OnInit {
     public paymentUrl: string;
     isGenerated = false;
 
-    isLoggedIn = false;
+    // isLoggedIn = false;
 
     constructor(private fb: UntypedFormBuilder,
         public productService: ProductService,
@@ -57,19 +57,16 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
-        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
-            this.userId = userInfo.userId;
-
-            this.userService.getUserById(this.userId).subscribe((response) => {
-                this.userName = response.fullName
-            })
-            this.userService.getAddressesByUser(this.userId).subscribe((response) => {
-                this.addresses = response.addresses;
-            })
-            this.productService.cartItems.subscribe(response => this.products = response);
-            this.getTotal.subscribe(amount => this.amount = amount);
-        })
+        // this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
+        // console.log(this.isLoggedIn);
+        this.userService.getUserById(this.userId).subscribe((response) => {
+            this.userName = response.fullName;
+        });
+        this.userService.getAddressesByUser(this.userId).subscribe((response) => {
+            this.addresses = response.addresses;
+        });
+        this.productService.cartItems.subscribe(response => this.products = response);
+        this.getTotal.subscribe(amount => this.amount = amount);
     }
 
     public get getSubTotal(): Observable<number> {

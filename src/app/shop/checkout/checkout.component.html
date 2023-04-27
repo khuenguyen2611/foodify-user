@@ -124,16 +124,16 @@
                                                         <label for="payment-3">ZaloPay</label>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div class="radio-option paypal" *ngIf="!isLoggedIn">
-                                                        <p>Yêu cầu đăng nhập vào tài khoản của quý khách trước khi thanh
-                                                            toán đơn hàng</p>
-                                                    </div>
-                                                </li>
+<!--                                                <li>-->
+<!--                                                    <div class="radio-option paypal" *ngIf="!isLoggedIn">-->
+<!--                                                        <p>Yêu cầu đăng nhập vào tài khoản của quý khách trước khi thanh-->
+<!--                                                            toán đơn hàng</p>-->
+<!--                                                    </div>-->
+<!--                                                </li>-->
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="text-end" *ngIf="isLoggedIn">
+                                    <div class="text-end">
                                         <button type="submit" class="btn-solid btn"
                                                 *ngIf="payment == 'CASH'"
                                                 (click)="cashCheckout()">
@@ -141,7 +141,7 @@
                                         </button>
                                     </div>
 
-                                    <div class="text-end" *ngIf="isLoggedIn">
+                                    <div class="text-end">
                                         <button type="submit" class="btn-solid btn"
                                                 (click)="zaloPayCheckout()"
                                                 *ngIf="payment == 'ZaloPay'">

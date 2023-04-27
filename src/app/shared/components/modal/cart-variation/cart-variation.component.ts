@@ -2,6 +2,8 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ProductService} from '../../../services/product.service';
 import {Product} from '../../../classes/product';
+import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-cart-variation',
@@ -14,7 +16,11 @@ export class CartVariationComponent implements OnInit, OnDestroy {
 
     public products: Product[] = [];
 
-    constructor(public productService: ProductService) {
+    isLoggedIn = false;
+
+    constructor(public productService: ProductService,
+                private toastService: ToastrService,
+                private router: Router) {
         this.productService.cartItems.subscribe(response => this.products = response);
     }
 
@@ -32,6 +38,16 @@ export class CartVariationComponent implements OnInit, OnDestroy {
 
     removeItem(product: any) {
         this.productService.removeCartItem(product);
+    }
+
+    checkout() {
+        this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
+
+        if (!this.isLoggedIn) {
+            this.toastService.warning('Vui lòng đăng nhập trước khi tiến hành thanh toán', );
+        } else {
+            this.router.navigate(['/shop/checkout']);
+        }
     }
 
     ngOnDestroy(): void {
