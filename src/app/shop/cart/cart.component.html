@@ -111,7 +111,7 @@
                 <a [routerLink]="['/shop/collection/left/sidebar']" class="btn btn-solid">Tiếp tục mua sắm</a>
             </div>
             <div class="col-6">
-                <a [routerLink]="['/shop/checkout']" class="btn btn-solid">Thanh toán</a>
+                <a (click)="checkout()" class="btn btn-solid">Thanh toán</a>
             </div>
         </div>
     </div>

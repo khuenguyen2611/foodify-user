@@ -39,7 +39,7 @@ export class CheckoutComponent implements OnInit {
     public paymentUrl: string;
     isGenerated = false;
 
-    isLoggedIn = false;
+    // isLoggedIn = false;
 
     constructor(private fb: UntypedFormBuilder,
                 public productService: ProductService,
@@ -54,8 +54,8 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
-        console.log(this.isLoggedIn);
+        // this.isLoggedIn = Boolean(localStorage.getItem('isLoggedIn'));
+        // console.log(this.isLoggedIn);
         this.userService.getUserById(this.userId).subscribe((response) => {
             this.userName = response.fullName;
         });
