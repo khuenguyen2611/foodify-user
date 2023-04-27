@@ -6,6 +6,7 @@ import { ProductService } from '../../../services/product.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/shared/services/firebase.service';
 import { ToastrService } from "ngx-toastr";
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-product-box-one',
@@ -41,14 +42,6 @@ export class ProductBoxOneComponent implements OnInit {
         this.userService.getUserByToken(this.token).subscribe((userInfo) => {
             this.userId = userInfo.userId;
         })
-    }
-
-    ngOnInit(): void {
-        if (this.loader) {
-            setTimeout(() => {
-                this.loader = false;
-            }, 2000); // Skeleton Loader
-        }
     }
 
     addToCart(product: any) {
