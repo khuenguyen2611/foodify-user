@@ -96,7 +96,7 @@ export class FirebaseService {
 
     logout() {
         this.firebaseAuth.signOut().then(
-            () => console.log('successfully!')
+            () => { }
         );
         this.token = null;
         localStorage.clear();

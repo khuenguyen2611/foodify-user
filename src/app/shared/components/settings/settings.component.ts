@@ -1,9 +1,12 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-import {Observable} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {ProductService} from '../../services/product.service';
-import {Product} from '../../classes/product';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../classes/product';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
     selector: 'app-settings',
@@ -14,6 +17,7 @@ export class SettingsComponent implements OnInit {
 
     public products: Product[] = [];
     public search = false;
+    private isLoggedIn = this.firebaseService.IsLoggedIn();
 
     public languages = [{
         name: 'English',
@@ -42,8 +46,11 @@ export class SettingsComponent implements OnInit {
     }];
 
     constructor(@Inject(PLATFORM_ID) private platformId: Object,
-                private translate: TranslateService,
-                public productService: ProductService) {
+        private toastService: ToastrService,
+        private firebaseService: FirebaseService,
+        private router: Router,
+        private translate: TranslateService,
+        public productService: ProductService) {
         this.productService.cartItems.subscribe(response => this.products = response);
     }
 
@@ -69,4 +76,21 @@ export class SettingsComponent implements OnInit {
         this.productService.Currency = currency;
     }
 
+    goToWishlist() {
+        if (this.isLoggedIn) {
+            this.router.navigate(['/home/wishlist'])
+        }
+        else {
+            this.toastService.warning("Vui lòng đăng nhập để xem danh sách yêu thích của bạn.")
+        }
+    }
+
+    goToOrder() {
+        if (this.isLoggedIn) {
+            this.router.navigate(['/home/my-orders'])
+        }
+        else {
+            this.toastService.warning("Vui lòng đăng nhập để xem đơn hàng của bạn.")
+        }
+    }
 }

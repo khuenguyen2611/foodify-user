@@ -14,7 +14,6 @@ export class TransactionService {
   ) { }
 
   createNewTransaction(transactionDto: Transaction) {
-    console.log(transactionDto);
     return this.httpClient.post(this.transUrl, transactionDto);
   }
 }

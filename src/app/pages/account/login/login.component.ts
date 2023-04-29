@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
         firebase.initializeApp(config);
         this.createLoginForm();
         this.verify = JSON.parse(localStorage.getItem('verificationId') || '{}');
-        console.log(this.verify);
     }
 
     createLoginForm() {

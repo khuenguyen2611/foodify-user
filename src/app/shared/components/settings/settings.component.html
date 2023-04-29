@@ -1,13 +1,13 @@
 <div class="icon-nav">
   <ul>
     <li class="onhover-div mobile-search search-widgets" id="search-widgets">
-      <div [routerLink]="['/home/wishlist']">
+      <div (click)="goToWishlist()">
         <img src="assets/images/icon/heart.png" class="img-fluid" alt="">
         <i class="ti-search"></i>
       </div>
     </li>
     <li class="onhover-div mobile-search search-widgets" id="search-widgets">
-      <div [routerLink]="['/home/my-orders']">
+      <div (click)="goToOrder()">
         <img src="assets/images/icon/search1.png" class="img-fluid" alt="">
         <i class="ti-search"></i>
       </div>

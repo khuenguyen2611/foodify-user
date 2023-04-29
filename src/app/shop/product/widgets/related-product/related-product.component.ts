@@ -1,7 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Product} from '../../../../shared/classes/product';
-import {ProductService} from '../../../../shared/services/product.service';
-import {Category} from 'src/app/shared/classes/category';
+import { Component, OnInit, Input } from '@angular/core';
+import { Product } from '../../../../shared/classes/product';
+import { ProductService } from '../../../../shared/services/product.service';
+import { Category } from 'src/app/shared/classes/category';
 
 @Component({
     selector: 'app-related-product',
@@ -22,6 +22,5 @@ export class RelatedProductComponent implements OnInit {
         this.productService.getProducts.subscribe(response =>
             this.products = response.filter(item => item.categories[0].name === this.type)
         );
-        console.log('related: ' + this.products);
     }
 }
