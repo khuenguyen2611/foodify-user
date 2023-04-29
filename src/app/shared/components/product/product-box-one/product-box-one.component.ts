@@ -16,6 +16,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class ProductBoxOneComponent implements OnInit {
     private userId: number;
     token: string = localStorage.getItem('jwt-token');
+    private isLoggedIn = this.firebaseService.IsLoggedIn();
 
     @Input() product: Product;
     @Input() currency: any = this.productService.Currency; // Default Currency
@@ -39,9 +40,11 @@ export class ProductBoxOneComponent implements OnInit {
         if (this.loader) {
             setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
         }
-        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
-            this.userId = userInfo.userId;
-        })
+        if (this.isLoggedIn) {
+            this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+                this.userId = userInfo.userId;
+            })
+        }
     }
 
     addToCart(product: any) {

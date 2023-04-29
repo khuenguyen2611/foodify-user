@@ -17,6 +17,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class ProductSidebarComponent implements OnInit {
     private userId: number;
     private token: string = localStorage.getItem('jwt-token')
+    private isLoggedIn = this.firebaseService.IsLoggedIn();
 
     comments: Comment[] = [];
 
@@ -42,20 +43,29 @@ export class ProductSidebarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
-            this.userId = userInfo.userId;
+        if (this.isLoggedIn) {
+            this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+                this.userId = userInfo.userId;
+                this.loadProductData();
+                this.loadCommentData();
+            })
+        }
+        else {
             this.loadProductData();
             this.loadCommentData();
-        })
+        }
+
     }
 
     loadProductData() {
         const id = +this.route.snapshot.paramMap.get('id');
         this.productService.getProductById(id).subscribe((product) => {
             this.product = product;
-            this.productService.checkFavouriteProduct(this.userId, this.product.id).subscribe((response) => {
-                this.isWishlist = response.isTrue;
-            });
+            if (this.isLoggedIn) {
+                this.productService.checkFavouriteProduct(this.userId, this.product.id).subscribe((response) => {
+                    this.isWishlist = response.isTrue;
+                });
+            }
         });
     }
 
@@ -69,13 +79,17 @@ export class ProductSidebarComponent implements OnInit {
     // Add to cart
     async addToCart(product: any) {
         const res = await this.productService.addToCart(product);
-        console.log(res);
     }
 
     // Add to Wishlist
     addToWishlist(product: Product) {
-        this.productService.addToWishlist(this.userId, product);
-        this.isWishlist = true;
+        if (this.isLoggedIn) {
+            this.productService.addToWishlist(this.userId, product);
+            this.isWishlist = true;
+        }
+        else {
+            this.toastService.warning("Vui lòng đăng nhập trước khi thêm sản phẩm vào yêu thích ^^")
+        }
     }
 
     deleteWishlistItem(product: Product) {

@@ -1,11 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {ToastrService} from 'ngx-toastr';
-import {Product} from '../classes/product';
-import {environment} from 'src/environments/environment';
-import {StringBoolObject} from '../string-bool-object';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Product } from '../classes/product';
+import { environment } from 'src/environments/environment';
+import { StringBoolObject } from '../string-bool-object';
+import { FirebaseService } from './firebase.service';
 
 const state = {
     products: JSON.parse(localStorage.products || '[]'),
@@ -19,17 +20,20 @@ const state = {
 })
 export class ProductService {
 
-    public Currency = {name: 'VND', currency: 'VND', price: 1}; // Default Currency
+    public Currency = { name: 'VND', currency: 'VND', price: 1 }; // Default Currency
     public OpenCart = false;
     public Products;
     private baseUrl = environment.foodOrderingBaseApiUrl;
+    private isLoggedIn = this.firebaseService.IsLoggedIn();
+
 
     private productUrl = `${environment.foodOrderingBaseApiUrl}/products`;
     private userUrl = `${environment.foodOrderingBaseApiUrl}/users`;
     private sameShop = false;
 
     constructor(private httpClient: HttpClient,
-                private toastrService: ToastrService) {
+        private toastrService: ToastrService,
+        private firebaseService: FirebaseService) {
     }
 
     /*
@@ -89,11 +93,16 @@ export class ProductService {
 
     // Add to Wishlist
     public addToWishlist(userId: number, product: Product) {
-        return this.httpClient.post<StringBoolObject>(this.userUrl + `/${userId}/loves/${product.id}`, '').subscribe({
-            next: () => {
-                this.toastrService.success(`${product.name} đã được thêm vào danh sách yêu thích.`);
-            }
-        });
+        if (this.isLoggedIn) {
+            return this.httpClient.post<StringBoolObject>(this.userUrl + `/${userId}/loves/${product.id}`, '').subscribe({
+                next: () => {
+                    this.toastrService.success(`${product.name} đã được thêm vào danh sách yêu thích.`);
+                }
+            });
+        }
+        else {
+            this.toastrService.warning("Vui lòng đăng nhập trước khi thêm sản phẩm yêu thích ^^")
+        }
     }
 
     // Check Wishlist Product

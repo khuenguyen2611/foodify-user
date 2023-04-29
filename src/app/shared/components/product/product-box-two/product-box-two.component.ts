@@ -15,6 +15,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class ProductBoxTwoComponent implements OnInit {
     private userId: number;
     token: string = localStorage.getItem('jwt-token')
+    private isLoggedIn = this.firebaseService.IsLoggedIn();
 
     @Input() product: Product;
     @Input() currency: any = this.productService.Currency; // Default Currency
@@ -33,9 +34,10 @@ export class ProductBoxTwoComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userService.getUserByToken(this.token).subscribe(userInfo => {
-            this.userId = userInfo.userId;
-        })
+        if (this.isLoggedIn)
+            this.userService.getUserByToken(this.token).subscribe(userInfo => {
+                this.userId = userInfo.userId;
+            })
     }
 
     addToCart(product: Product) {
@@ -43,14 +45,20 @@ export class ProductBoxTwoComponent implements OnInit {
     }
 
     addToWishlist(product: Product) {
-        this.productService.checkFavouriteProduct(this.userId, product.id).subscribe({
-            next: (response) => {
-                if (response.isTrue == true) {
-                    this.toastrService.success('Sản phẩm đã có trong danh sách yêu thích');
-                } else {
-                    this.productService.addToWishlist(this.userId, product);
+        if (this.isLoggedIn) {
+            this.productService.checkFavouriteProduct(this.userId, product.id).subscribe({
+                next: (response) => {
+                    if (response.isTrue == true) {
+                        this.toastrService.success('Sản phẩm đã có trong danh sách yêu thích');
+                    } else {
+                        this.productService.addToWishlist(this.userId, product);
+                    }
                 }
-            }
-        })
+            })
+        }
+        else {
+            this.toastrService.warning("Vui lòng đăng nhập trước khi thêm sản phẩm yêu thích ^^")
+        }
+
     }
 }

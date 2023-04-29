@@ -31,16 +31,17 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userService.getUserByToken(this.token).subscribe((userInfo) => {
-            this.userId = userInfo.userId;
-            this.userEmail = userInfo.userEmail;
-            this.userService.getUserById(this.userId).subscribe((user) => {
-                this.userFullName = user.fullName;
-                let nameParts = this.userFullName.split(" ");
-                this.userFullName = nameParts[nameParts.length - 1];
+        if (this.isLoggedIn) {
+            this.userService.getUserByToken(this.token).subscribe((userInfo) => {
+                this.userId = userInfo.userId;
+                this.userEmail = userInfo.userEmail;
+                this.userService.getUserById(this.userId).subscribe((user) => {
+                    this.userFullName = user.fullName;
+                    let nameParts = this.userFullName.split(" ");
+                    this.userFullName = nameParts[nameParts.length - 1];
+                })
             })
-        })
-
+        }
     }
 
     // @HostListener Decorator
