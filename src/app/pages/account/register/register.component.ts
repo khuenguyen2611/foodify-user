@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
             dob: new FormControl("", [Validators.required]),
             phoneNumber: new FormControl("", [Validators.required, Validators.pattern(/^(((\+|)84)|0)([1-9]{1})([0-9]{8})\b/)]),
             fullName: new FormControl("", [Validators.required, Validators.minLength(2)]),
-            identifiedCode: new FormControl("", [Validators.required, Validators.pattern(/^(\d{9}|\d{12})$/)]),
+            identifiedCode: new FormControl("", [Validators.required, Validators.pattern(/^0\d{8}$|^0\d{11}$|^\d{9}$|^\d{12}$/)]),
             password: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
             confirmPassword: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]),
             address: new FormControl("", [Validators.required, Validators.minLength(8)]),

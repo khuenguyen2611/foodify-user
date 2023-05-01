@@ -35,7 +35,7 @@
                             <div class="col-md-3">
                                 <label for="review">CCCD/CMND</label>
                                 <div class="mb-3">
-                                    <input formControlName="identifiedCode" type="text" class="form-control"
+                                    <input formControlName="identifiedCode" type="tel" class="form-control"
                                         placeholder="CCCD/CMND" required="">
                                     <div *ngIf="userIdentifiedCode?.invalid && (userIdentifiedCode?.dirty || userIdentifiedCode?.touched)" class="alert alert-danger mt-1">
                                         <div *ngIf="userIdentifiedCode?.errors?.['required']">Vui lòng không được bỏ trống CMND/CCCD.</div>
