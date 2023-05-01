@@ -54,7 +54,8 @@ body {
 }
 
 .user-img {
-
+    object-fit: cover;
+    object-position: center center;
     margin-top: 4px;
 }
 
