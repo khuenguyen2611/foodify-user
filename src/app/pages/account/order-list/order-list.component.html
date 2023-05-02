@@ -12,43 +12,44 @@
             <div class="col-sm-12">
                 <table class="table cart-table table-responsive-xs">
                     <thead>
-                    <tr class="table-head">
-                        <th scope="col">STT</th>
-                        <th scope="col">Mã đơn hàng</th>
-                        <th scope="col">Ngày đặt đơn</th>
-                        <th scope="col">Phương thức thanh toán</th>
-                        <th scope="col">Giá trị</th>
-                        <th scope="col">Trạng thái</th>
-                    </tr>
+                        <tr class="table-head">
+                            <th scope="col">STT</th>
+                            <th scope="col">Mã đơn hàng</th>
+                            <th scope="col">Ngày đặt đơn</th>
+                            <th scope="col">Phương thức thanh toán</th>
+                            <th scope="col">Giá trị</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let order of orders; let i = index">
-                        <td>
-                            <p><a>{{ i + 1 }}</a></p>
-                        </td>
-                        <td>
-                            <p><strong style="cursor: pointer;" [routerLink]="['/home/order', order?.id]">{{
-                                order?.orderTrackingNumber
-                                }}</strong></p>
-                        </td>
-                        <td><a>{{ order?.orderTime }}</a>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <td>
+                                <p><a>{{ i + 1 }}</a></p>
+                            </td>
+                            <td>
+                                <p><strong style="cursor: pointer;" [routerLink]="['/home/order', order?.id]">{{
+                                        order?.orderTrackingNumber
+                                        }}</strong></p>
+                            </td>
+                            <td><a>{{ order?.orderTime }}</a>
 
-                        </td>
-                        <td>
-                            <p *ngIf="order?.paymentMethod == 'ZALO PAY'">Zalo pay</p>
-                            <p *ngIf="order?.paymentMethod == 'CASH'">Tiền mặt</p>
-                        </td>
-                        <td>
-                            <p>{{ order.total | currency:'VND' }}</p>
-                        </td>
-                        <td>
-                            <p *ngIf="order?.status =='AWAITING'">Chờ xác nhận</p>
-                            <p *ngIf="order?.status =='CONFIRMED'">Đã xác nhận</p>
-                            <p *ngIf="order?.status =='SHIPPING'">Đang giao hàng</p>
-                            <p *ngIf="order?.status =='COMPLETED'">Thành công</p>
-                            <p *ngIf="order?.status =='CANCELED'">Huỷ đơn</p>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <p *ngIf="order?.paymentMethod == 'ZALO PAY'">Zalo pay</p>
+                                <p *ngIf="order?.paymentMethod == 'CASH'">Tiền mặt</p>
+                            </td>
+                            <td>
+                                <p>{{ order.total | currency:'VND' }}</p>
+                            </td>
+                            <td>
+                                <p *ngIf="order?.status =='AWAITING'">Chờ xác nhận</p>
+                                <p *ngIf="order?.status =='CONFIRMED'">Đã xác nhận</p>
+                                <p *ngIf="order?.status =='SHIPPING'">Đang giao hàng</p>
+                                <p *ngIf="order?.status =='COMPLETED'">Thành công</p>
+                                <p *ngIf="order?.status =='CANCELED'">Huỷ đơn</p>
+                                <p *ngIf="order?.status =='REJECT_DELIVERY'">Không nhận hàng</p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

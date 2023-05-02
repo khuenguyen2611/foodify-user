@@ -216,6 +216,7 @@ export class UserAddressesComponent implements OnInit {
     }
 
     openCreateModal() {
+        this.resetAddressValue();
         this.modalService.open(this.createAddressModal,
             {
                 size: 'lg',
