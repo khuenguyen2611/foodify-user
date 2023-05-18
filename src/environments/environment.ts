@@ -9,7 +9,7 @@ export const environment = {
   // foodOrderingBaseApiUrl: 'http://localhost:8080/api',
   foodOrderingBaseApiUrl: 'https://foodify.up.railway.app/api',
   firebaseConfig: {
-    apiKey: 'AIzaSyADFtIQpmJ33Mme76zgj3JznZYcseBP9g8',
+    apiKey: 'AIzaSyAZFFIuXkbgdp2F-Em4CK2z8kVJ2L4p_UU',
     authDomain: 'foodify-55954.firebaseapp.com',
     databaseURL: 'https://foodify-55954-default-rtdb.firebaseio.com/',
     projectId: 'foodify-55954',
